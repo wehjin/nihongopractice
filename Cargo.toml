@@ -1,0 +1,12 @@
+[package]
+name = "potential"
+version = "0.1.0"
+authors = ["Jeffrey Yu <92849+wehjin@users.noreply.github.com>"]
+edition = "2018"
+
+[dependencies]
+yew= "0.14.3"
+
+[features]
+std_web = ["yew/std_web"]
+web_sys = ["yew/web_sys"]

@@ -83,7 +83,11 @@ impl Model {
 		html! {
 			<div>
 			<h1>{ format!("Home: {}", APP_NAME)}</h1>
-            <button onclick=self.link.callback(|_| Msg::Recognition)>{ "Train Recognition" }</button>
+			<ul>
+				<li>
+                <button onclick=self.link.callback(|_| Msg::Recognition)>{ "Recognition Game" }</button>
+                </li>
+			</ul>
             </div>
         }
 	}
@@ -91,7 +95,7 @@ impl Model {
 	fn view_answer_text(&self) -> Html {
 		html! {
 			<div>
-			<p>{ "Can forget?" }</p>
+			<p>{ "＝ can forget" }</p>
 			</div>
 		}
 	}
@@ -152,7 +156,7 @@ fn audio_url(search: &str) -> String {
 }
 
 fn active_verb() -> Verb {
-	let active_verb = Verb { search: "wasureraremasuka".to_string() };
+	let active_verb = Verb { search: "wasureraremasu".to_string() };
 	active_verb
 }
 

@@ -4,9 +4,28 @@ version = "0.1.0"
 authors = ["Jeffrey Yu <92849+wehjin@users.noreply.github.com>"]
 edition = "2018"
 
-[dependencies]
-yew= "0.14.3"
+[lib]
+crate-type = ["cdylib", "rlib"]
 
 [features]
+default = ["console_error_panic_hook"]
 std_web = ["yew/std_web"]
 web_sys = ["yew/web_sys"]
+
+[dependencies]
+wasm-bindgen = "0.2.60"
+console_error_panic_hook = { version = "0.1.1", optional = true }
+web_logger = "0.2"
+yew= { version = "0.14.3", features = ["web_sys"] }
+
+[dev-dependencies]
+wasm-bindgen-test = "0.2"
+
+[dependencies.web-sys]
+version = "0.3.4"
+features = [
+  'KeyboardEvent',
+]
+
+[profile.release]
+opt-level = "s"

@@ -25,18 +25,23 @@ pub fn recognition_page(game: &RecognitionGame, link: &ComponentLink<Model>) -> 
 
 fn recognition_content(link: &ComponentLink<Model>, game: &RecognitionGame) -> Html {
 	html! {
-			<ul>
-			<p><audio controls=true src=audio_url(&game.active_verb.search)></audio></p>
-			<p>{ recognition_answer_row(game.show_answer, link) }</p>
-			{
-				if game.show_answer {
-					recognition_action_row(link)
-				} else {
-					mdc::empty_div()
+		<section>
+			<div class="mdl-card__title">
+				<h2 class="mdl-card__title_text">{"Translate Clip"}</h2>
+			</div>
+			<div class="mdl-card__supporting-text">
+				<p><audio controls=true src=audio_url(&game.active_verb.search)></audio></p>
+				<p>{ recognition_answer_row(game.show_answer, link) }</p>
+				{
+					if game.show_answer {
+						recognition_action_row(link)
+					} else {
+						mdc::empty_div()
+					}
 				}
-			}
-            </ul>
-        }
+	        </div>
+		</section>
+    }
 }
 
 fn recognition_answer_row(show_answer: bool, link: &ComponentLink<Model>) -> Html {
@@ -59,11 +64,11 @@ fn recognition_answer_text() -> Html {
 
 fn recognition_action_row(link: &ComponentLink<Model>) -> Html {
 	html! {
-	<p>
-		{ mdc::primary_span("How was it?")}
+	<div class="mdl-dialog__content">
+		{" How did it go? "}
 		{mdc::flat_button("Hard • Repeat", Msg::Repeat, link)}
 		{mdc::flat_button("Easy • Retire", Msg::Pass, link)}
-	</p>
+	</div>
 	}
 }
 

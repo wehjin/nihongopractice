@@ -32,21 +32,18 @@ fn potential(verb: &str, kind: Kind) -> String {
 fn potential_ending(verb: &str, kind: Kind) -> String {
 	match kind {
 		Kind::Ru => "られる",
-		Kind::U => {
-			let u: &str = &last_char(verb);
-			match u {
-				"う" => "える",
-				"つ" => "てる",
-				"る" => "れる",
-				"む" => "める",
-				"ぶ" => "べる",
-				"ぬ" => "ねる",
-				"く" => "ける",
-				"ぐ" => "げる",
-				"す" => "せる",
-				_ => panic!("Invalid ending")
-			}
-		}
+		Kind::U => match last_char(verb).as_str() {
+			"う" => "える",
+			"つ" => "てる",
+			"る" => "れる",
+			"む" => "める",
+			"ぶ" => "べる",
+			"ぬ" => "ねる",
+			"く" => "ける",
+			"ぐ" => "げる",
+			"す" => "せる",
+			_ => panic!("Invalid ending")
+		},
 	}.to_string()
 }
 
@@ -62,21 +59,19 @@ fn conjugate_verb(verb: &str, kind: Kind, tense: Tense, audience: Audience) -> S
 fn ta(verb: &str, kind: Kind) -> String {
 	let ta = match kind {
 		Kind::Ru => "た",
-		Kind::U => {
-			let u: &str = &last_char(verb);
-			match u {
-				"う" => "った",
-				"つ" => "った",
-				"る" => "った",
-				"む" => "んだ",
-				"ぶ" => "んだ",
-				"ぬ" => "んだ",
-				"く" => "いた",
-				"ぐ" => "いだ",
-				"す" => "した",
-				_ => panic!("Invalid ending")
-			}
-		}
+		Kind::U if verb.ends_with("行く") || verb == "いく" || verb.ends_with("ていく") => "った",
+		Kind::U => match last_char(verb).as_str() {
+			"う" => "った",
+			"つ" => "った",
+			"る" => "った",
+			"む" => "んだ",
+			"ぶ" => "んだ",
+			"ぬ" => "んだ",
+			"く" => "いた",
+			"ぐ" => "いだ",
+			"す" => "した",
+			_ => panic!("Invalid ending")
+		},
 	};
 	format!("{}{}", drop_last_char(verb), ta)
 }
@@ -123,6 +118,7 @@ mod tests {
 			(asobu(), "あそんだ"),
 			(shinu(), "しんだ"),
 			(kaku(), "かいた"),
+			(iku(), "行った"),
 			(nugu(), "ぬいだ"),
 			(sagasu(), "さがした"),
 		];
@@ -147,6 +143,7 @@ mod tests {
 			(asobu(), "あそびます"),
 			(shinu(), "しにます"),
 			(kaku(), "かきます"),
+			(iku(), "行きます"),
 			(nugu(), "ぬぎます"),
 			(sagasu(), "さがします"),
 		];
@@ -211,6 +208,8 @@ mod tests {
 	fn shinu() -> Verb { Verb { kind: Kind::U, search: "しぬ".to_string() } }
 
 	fn kaku() -> Verb { Verb { kind: Kind::U, search: "かく".to_string() } }
+
+	fn iku() -> Verb { Verb { kind: Kind::U, search: "行く".to_string() } }
 
 	fn nugu() -> Verb { Verb { kind: Kind::U, search: "ぬぐ".to_string() } }
 

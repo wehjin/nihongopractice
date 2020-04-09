@@ -8,6 +8,7 @@ use wasm_bindgen::prelude::*;
 mod utils;
 mod app;
 mod view;
+mod verb;
 
 #[wasm_bindgen]
 extern {

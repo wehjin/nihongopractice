@@ -99,7 +99,7 @@ pub enum Msg {
 
 #[derive(Clone)]
 pub struct RecognitionGame {
-	pub active_verb: Verb,
+	pub active_verb: VerbChallenge,
 	pub show_answer: bool,
 	pub remaining: usize,
 	pub audio_ref: NodeRef,
@@ -151,10 +151,10 @@ impl RecognitionGame {
 }
 
 #[derive(Clone)]
-pub struct Verb {
+pub struct VerbChallenge {
 	pub search: String
 }
 
-pub fn any_verb() -> Verb {
-	Verb { search: "wasureraremasu".to_string() }
+pub fn any_verb() -> VerbChallenge {
+	VerbChallenge { search: "wasureraremasu".to_string() }
 }

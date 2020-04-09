@@ -57,7 +57,7 @@ impl Component for Model {
 
 	fn view(&self) -> Html {
 		match &self.state {
-			State::Idle => self.view_idle(),
+			State::Idle => view::idle(&self.link),
 			State::Recognition { game } => self.view_recognition(game),
 		}
 	}
@@ -68,6 +68,7 @@ pub enum State {
 	Recognition { game: RecognitionGame },
 }
 
+#[derive(Copy, Clone)]
 pub enum Msg {
 	Quit,
 	Recognition,
@@ -76,22 +77,7 @@ pub enum Msg {
 	Pass,
 }
 
-const APP_NAME: &str = "Verb Trainer";
-
 impl Model {
-	fn view_idle(&self) -> Html {
-		html! {
-			<div>
-			<h1>{ format!("Home: {}", APP_NAME)}</h1>
-			<ul>
-				<li>
-                <button onclick=self.link.callback(|_| Msg::Recognition)>{ "Recognition Game" }</button>
-                </li>
-			</ul>
-            </div>
-        }
-	}
-
 	fn view_answer_text(&self) -> Html {
 		html! {
 			<div>
@@ -133,7 +119,7 @@ impl Model {
 			<div>
 			</div>
 			<p>
-			<audio  controls=true src=audio_url(&active_verb.search)></audio>
+			<audio controls=true src=audio_url(&active_verb.search)></audio>
 			</p>
 			<p>
 			{ self.view_answer(*show_answer) }

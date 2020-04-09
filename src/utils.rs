@@ -1,3 +1,6 @@
+use wasm_bindgen::JsValue;
+use wasm_bindgen_futures::JsFuture;
+
 pub fn set_panic_hook() {
 	#[cfg(feature = "console_error_panic_hook")]
 		console_error_panic_hook::set_once();
@@ -7,6 +10,27 @@ pub fn audio_url(search: &str) -> String {
 	format!("http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q={}&tl=ja", search)
 }
 
+pub fn now() -> f64 {
+	let window = web_sys::window().expect("should have a window in this context");
+	let performance = window
+		.performance()
+		.expect("performance should be available");
+	performance.now()
+}
+
+pub fn play_audio(audio: &web_sys::HtmlAudioElement) {
+	let promise = audio.play().expect("audio should play");
+	let future = wasm_bindgen_futures::JsFuture::from(promise);
+	wasm_bindgen_futures::spawn_local(async move {
+		play_audio_from_js(future).await.expect("audio future should play");
+	})
+}
+
+async fn play_audio_from_js(future: JsFuture) -> Result<JsValue, JsValue> {
+	let result = future.await?;
+	Ok(result)
+}
+
 pub mod mdc {
 	use yew::{ComponentLink, Html, html};
 
@@ -14,8 +38,8 @@ pub mod mdc {
 
 	pub fn flat_button(label: &str, msg: Msg, link: &ComponentLink<Model>) -> Html {
 		html! {
-        <button class="mdl-button mdl-js-button mdl-button--primary" onclick=link.callback(move |_| msg)>{ label }</button>
-	}
+        <button class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect" onclick=link.callback(move |_| msg)>{ label }</button>
+		}
 	}
 
 	pub fn page<Ctx>(

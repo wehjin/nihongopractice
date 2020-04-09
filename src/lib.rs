@@ -1,4 +1,7 @@
 #![recursion_limit = "512"]
+#[macro_use]
+extern crate log;
+extern crate web_sys;
 
 use wasm_bindgen::prelude::*;
 
@@ -13,8 +16,9 @@ extern {
 
 #[wasm_bindgen]
 pub fn run_app() -> Result<(), JsValue> {
-	utils::set_panic_hook();
 	web_logger::init();
+	utils::set_panic_hook();
+	info!("starting up");
 	yew::start_app::<app::Model>();
 	Ok(())
 }

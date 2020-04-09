@@ -310,7 +310,9 @@ name = "potential"
 version = "0.1.0"
 dependencies = [
  "console_error_panic_hook",
+ "log",
  "wasm-bindgen",
+ "wasm-bindgen-futures 0.4.10",
  "wasm-bindgen-test",
  "web-sys",
  "web_logger",
@@ -687,7 +689,6 @@ dependencies = [
  "serde",
  "serde_json",
  "slab",
- "stdweb",
  "thiserror",
  "wasm-bindgen",
  "wasm-bindgen-futures 0.4.10",

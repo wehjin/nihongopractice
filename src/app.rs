@@ -57,7 +57,7 @@ impl Component for Model {
 
 	fn view(&self) -> Html {
 		match &self.state {
-			State::Idle => view::idle(&self.link),
+			State::Idle => view::idle_page(&self.link),
 			State::Recognition { game } => view::recognition_page(game, &self.link),
 		}
 	}

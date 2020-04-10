@@ -47,7 +47,22 @@ pub mod mdc {
 
 	pub fn flat_button(label: &str, msg: Msg, link: &ComponentLink<Model>) -> Html {
 		html! {
-        <button class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect" onclick=link.callback(move |_| msg)>{ label }</button>
+        <button
+            class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"
+            onclick=link.callback(move |_| msg)>
+            { label }
+        </button>
+		}
+	}
+
+	pub fn center_flat_button(label: &str, msg: Msg, link: &ComponentLink<Model>) -> Html {
+		html! {
+        <button
+            class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"
+            style="width:100%"
+            onclick=link.callback(move |_| msg)>
+            { label }
+        </button>
 		}
 	}
 

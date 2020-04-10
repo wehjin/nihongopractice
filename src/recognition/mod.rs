@@ -1,7 +1,7 @@
 use yew::NodeRef;
 
 use crate::utils::now;
-use crate::verb::{Audience, Kind, Mode, random_audience, random_mode, random_tense, Tense, Verb, verbs};
+use crate::verb::{random_audience, random_mode, random_tense, verbs};
 
 pub use self::step::*;
 

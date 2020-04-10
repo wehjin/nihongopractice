@@ -1,87 +1,96 @@
 use yew::{ComponentLink, html, Html};
 
 use crate::app::{Model, Msg};
-use crate::recognition::Challenge;
+use crate::recognition::{Challenge, ChallengeStep};
 use crate::utils::{audio_url, mdc};
 
 pub fn idle_page(link: &ComponentLink<Model>) -> Html {
 	mdc::page("Verb Trainer", None, link, &(), idle_content)
 }
 
-
 fn idle_content(link: &ComponentLink<Model>, _: &()) -> Html {
 	html! {
-<ol>
-	<li>
-	{ mdc::flat_button( "Recognition Game", Msg::Recognition, link)}
-    </li>
-</ol>
+		<div class="mdl-grid center-items">
+			<div class="mdl-cell mdl-cell--4-col mdl-cell--middle">
+		        <button
+		            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+		            style="width:100%"
+		            onclick=link.callback(|_| Msg::Recognition)>
+		            { "Recognition Challenge" }
+		        </button>
+			</div>
+		</div>
     }
 }
 
 pub fn recognition_page(game: &Challenge, link: &ComponentLink<Model>) -> Html {
 	link.send_message(Msg::Play(false));
-	let page_action = Some(format!("Quit ({} remaining)", game.active_count()).to_uppercase());
+	let count = game.active_count();
+	let page_action = if count == 1 {
+		None
+	} else {
+		Some(format!("Quit ({} to go)", count).to_uppercase())
+	};
 	mdc::page("Recognition", page_action, link, game, recognition_content)
 }
 
 fn recognition_content(link: &ComponentLink<Model>, game: &Challenge) -> Html {
 	html! {
-		<section>
-			<div class="mdl-card__title">
-				<h2 class="mdl-card__title_text">{ &game.active_step().name }</h2>
+		<div class="mdl-grid center-items ">
+			<div class="mdl-cell mdl-cell--4-col mdl-cell--middle">
+				<div class="mdl-card mdl-shadow--2dp" style="width:100%">
+					<audio src=audio_url(&game.active_step().audio_tag()) ref=game.audio_ref.clone()/>
+					<div class="mdl-card__title mdl-color--indigo-50">
+						<h2 class="mdl-card__title_text">{ &game.active_step().name }</h2>
+					</div>
+					<div class="mdl-card__title">
+						<div class="mdl-card__subtitle-text">
+							{ game.active_step().card_answer(game.show_answer)}
+				        </div>
+					</div>
+					<div class="mdl-card__supporting-text"/>
+		            {
+		                if game.show_answer {
+							recognition_repeat_and_go(link)
+		                } else {
+		                    recognition_play_and_show(link)
+		                }
+		            }
+				</div>
 			</div>
-			<div class="mdl-card__supporting-text">
-				<audio src=audio_url(&game.active_step().audio_tag()) ref=game.audio_ref.clone()/>
-				{ recognition_answer_row(game.show_answer, &game.active_step().answer(), link) }
-				{
-					if game.show_answer {
-						recognition_action_row(link)
-					} else {
-						mdc::empty_div()
-					}
-				}
-	        </div>
-		</section>
+		</div>
     }
-}
-
-fn recognition_answer_row(show_answer: bool, answer: &str, link: &ComponentLink<Model>) -> Html {
-	if show_answer {
-		recognition_answer_text(answer)
-	} else {
-		recognition_play_and_show(link)
-	}
 }
 
 fn recognition_play_and_show(link: &ComponentLink<Model>) -> Html {
 	html! {
-	<>
-	<p/><p/>
-	<div>
-	{ mdc::flat_button("Re-play", Msg::Play(true), link) }
-	{ mdc::flat_button("Show Answer", Msg::ShowAnswer, link) }
-	</div>
-	</>
+		<div class="mdl-card__actions mdl-card--border">
+			{ mdc::flat_button("Reveal Answer", Msg::ShowAnswer, link) }
+			{ mdc::flat_button("Play Again", Msg::Play(true), link) }
+		</div>
 	}
 }
 
-fn recognition_answer_text(answer: &str) -> Html {
+fn recognition_repeat_and_go(link: &ComponentLink<Model>) -> Html {
 	html! {
-		<span class="mdl-chip mdl-chip--contact">
-			<span class="mdl-chip__contact mdl-color--primary mdl-color-text--white">{"≈"}</span>
-            <span class="mdl-chip__text">{answer}</span>
-		</span>
+		<div class="mdl-card__actions mdl-card--border">
+			{mdc::flat_button("Repeat the question", Msg::Repeat, link)}
+			{mdc::flat_button("Nailed it !", Msg::Pass, link)}
+		</div>
 	}
 }
 
-fn recognition_action_row(link: &ComponentLink<Model>) -> Html {
-	html! {
-	<div class="mdl-dialog__content">
-		{" How did it go? "}
-		{mdc::flat_button("Hard • Repeat it", Msg::Repeat, link)}
-		{mdc::flat_button("Easy • Retire it", Msg::Pass, link)}
-	</div>
+impl ChallengeStep {
+	fn card_answer(&self, show_answer: bool) -> Html {
+		html! {
+			<span class="mdl-chip mdl-chip--contact">
+				<span class="mdl-chip__contact mdl-color--primary mdl-color-text--white">{"≈"}</span>
+				<i>
+				<span class="mdl-chip__text">
+		            { if show_answer { self.answer() } else { "HIDDEN".to_string() } }
+	            </span>
+	            </i>
+			</span>
+		}
 	}
 }
-

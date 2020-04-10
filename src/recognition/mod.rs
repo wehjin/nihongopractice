@@ -89,17 +89,3 @@ impl Challenge {
 		}
 	}
 }
-
-pub fn any_step() -> ChallengeStep {
-	ChallengeStep {
-		name: "Question 1".to_string(),
-		verb: Verb {
-			kind: Kind::U,
-			search: "あそぶ".to_string(),
-			english: "play".to_string(),
-		},
-		tense: Tense::Present,
-		audience: Audience::Plain,
-		mode: Mode::Potential,
-	}
-}

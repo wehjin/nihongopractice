@@ -1,6 +1,7 @@
 #![recursion_limit = "512"]
 #[macro_use]
 extern crate log;
+extern crate rand;
 extern crate web_sys;
 
 use wasm_bindgen::prelude::*;
@@ -9,6 +10,7 @@ mod utils;
 mod app;
 mod view;
 mod verb;
+mod recognition;
 
 #[wasm_bindgen]
 extern {

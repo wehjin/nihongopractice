@@ -1,7 +1,7 @@
 #![recursion_limit = "512"]
+extern crate getrandom;
 #[macro_use]
 extern crate log;
-extern crate rand;
 extern crate web_sys;
 
 use wasm_bindgen::prelude::*;

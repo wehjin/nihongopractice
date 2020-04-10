@@ -21,7 +21,7 @@ fn idle_content(link: &ComponentLink<Model>, _: &()) -> Html {
 
 pub fn recognition_page(game: &Challenge, link: &ComponentLink<Model>) -> Html {
 	link.send_message(Msg::Play(false));
-	let page_action = Some(format!("Quit ({} remaining)", game.remaining + 1).to_uppercase());
+	let page_action = Some(format!("Quit ({} remaining)", game.active_count()).to_uppercase());
 	mdc::page("Recognition", page_action, link, game, recognition_content)
 }
 
@@ -29,11 +29,11 @@ fn recognition_content(link: &ComponentLink<Model>, game: &Challenge) -> Html {
 	html! {
 		<section>
 			<div class="mdl-card__title">
-				<h2 class="mdl-card__title_text">{ &game.active_step.name }</h2>
+				<h2 class="mdl-card__title_text">{ &game.active_step().name }</h2>
 			</div>
 			<div class="mdl-card__supporting-text">
-				<audio src=audio_url(&game.active_step.audio_tag()) ref=game.audio_ref.clone()/>
-				{ recognition_answer_row(game.show_answer, &game.active_step.answer(), link) }
+				<audio src=audio_url(&game.active_step().audio_tag()) ref=game.audio_ref.clone()/>
+				{ recognition_answer_row(game.show_answer, &game.active_step().answer(), link) }
 				{
 					if game.show_answer {
 						recognition_action_row(link)
@@ -59,7 +59,7 @@ fn recognition_play_and_show(link: &ComponentLink<Model>) -> Html {
 	<>
 	<p/><p/>
 	<div>
-	{ mdc::flat_button("Play", Msg::Play(true), link) }
+	{ mdc::flat_button("Re-play", Msg::Play(true), link) }
 	{ mdc::flat_button("Show Answer", Msg::ShowAnswer, link) }
 	</div>
 	</>

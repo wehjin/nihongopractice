@@ -1,51 +1,76 @@
-use crate::verb::{Audience, Mode, Tense, Verb};
+use yew::NodeRef;
 
-#[derive(Clone, PartialEq, Debug)]
-pub struct ChallengeStep {
-	pub verb: Verb,
-	pub tense: Tense,
-	pub audience: Audience,
-	pub mode: Mode,
+use crate::utils::now;
+use crate::verb::{Audience, Kind, Mode, Tense, Verb};
+
+pub use self::step::*;
+
+mod step;
+
+#[derive(Clone)]
+pub struct Challenge {
+	pub active_step: ChallengeStep,
+	pub show_answer: bool,
+	pub remaining: usize,
+	pub audio_ref: NodeRef,
+	pub play_request_time: f64,
+	pub play_time: f64,
 }
 
-impl ChallengeStep {
-	fn audio_tag(&self) -> String {
-		self.verb.conjugate(self.tense, self.audience, self.mode)
+impl Challenge {
+	pub fn new() -> Self {
+		let now = now();
+		Challenge {
+			active_step: any_step(),
+			show_answer: false,
+			remaining: 4,
+			audio_ref: NodeRef::default(),
+			play_time: now - 3600.0,
+			play_request_time: now,
+		}
 	}
 
-	fn answer(&self) -> String {
-		self.verb.translate(self.tense, self.mode)
+	pub fn show_answer(&self) -> Self {
+		Challenge { show_answer: true, ..self.clone() }
+	}
+
+	pub fn pass_question(&self) -> Option<Self> {
+		if self.remaining == 0 {
+			None
+		} else {
+			Some(Challenge {
+				show_answer: false,
+				active_step: any_step(),
+				remaining: self.remaining - 1,
+				audio_ref: NodeRef::default(),
+				play_request_time: now(),
+				play_time: self.play_time,
+			})
+		}
+	}
+
+	pub fn repeat_question(&self) -> Self {
+		Challenge {
+			show_answer: false,
+			active_step: any_step(),
+			remaining: self.remaining,
+			audio_ref: NodeRef::default(),
+			play_request_time: now(),
+			play_time: self.play_time,
+		}
 	}
 }
 
-#[cfg(test)]
-mod tests {
-	use crate::recognition::ChallengeStep;
-	use crate::verb::{Audience, Kind, Mode, Tense, Verb};
-
-	#[test]
-	fn has_audio_tag() {
-		let step = miru_past_plain_immediate();
-		let tag = step.audio_tag();
-		assert_eq!(tag.as_str(), "見た");
-	}
-
-	#[test]
-	fn has_answer() {
-		let step = miru_past_plain_immediate();
-		let answer = step.answer();
-		assert_eq!(answer.as_str(), "did see")
-	}
-
-	fn miru_past_plain_immediate() -> ChallengeStep {
-		let verb = miru();
-		let tense = Tense::Past;
-		let audience = Audience::Plain;
-		let mode = Mode::Immediate;
-		ChallengeStep { verb, tense, audience, mode }
-	}
-
-	fn miru() -> Verb {
-		Verb { kind: Kind::Ru, search: "見る".to_string(), english: "see".to_string() }
+pub fn any_step() -> ChallengeStep {
+	ChallengeStep {
+		name: "Question 1".to_string(),
+		verb: Verb {
+			kind: Kind::U,
+			search: "あそぶ".to_string(),
+			english: "play".to_string(),
+		},
+		tense: Tense::Present,
+		audience: Audience::Plain,
+		mode: Mode::Potential,
 	}
 }

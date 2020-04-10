@@ -1,6 +1,7 @@
 use web_sys::HtmlAudioElement;
-use yew::{Component, ComponentLink, Html, NodeRef, ShouldRender};
+use yew::{Component, ComponentLink, Html, ShouldRender};
 
+use crate::recognition::Challenge;
 use crate::utils::{now, play_audio};
 
 use super::view;
@@ -26,7 +27,7 @@ impl Component for Model {
 	fn update(&mut self, msg: Self::Message) -> ShouldRender {
 		let new_state = match msg {
 			Msg::Quit => Some(State::Idle),
-			Msg::Recognition => Some(State::Recognition { game: RecognitionGame::new() }),
+			Msg::Recognition => Some(State::Recognition { game: Challenge::new() }),
 			Msg::ShowAnswer => match &self.state {
 				State::Recognition { game } => {
 					let new_game = game.show_answer();
@@ -84,7 +85,7 @@ impl Component for Model {
 
 pub enum State {
 	Idle,
-	Recognition { game: RecognitionGame },
+	Recognition { game: Challenge },
 }
 
 #[derive(Copy, Clone)]
@@ -95,66 +96,4 @@ pub enum Msg {
 	Repeat,
 	Pass,
 	Play(bool),
-}
-
-#[derive(Clone)]
-pub struct RecognitionGame {
-	pub active_verb: VerbChallenge,
-	pub show_answer: bool,
-	pub remaining: usize,
-	pub audio_ref: NodeRef,
-	pub play_request_time: f64,
-	pub play_time: f64,
-}
-
-impl RecognitionGame {
-	fn new() -> Self {
-		let now = now();
-		RecognitionGame {
-			active_verb: any_verb(),
-			show_answer: false,
-			remaining: 4,
-			audio_ref: NodeRef::default(),
-			play_time: now - 3600.0,
-			play_request_time: now,
-		}
-	}
-	fn show_answer(&self) -> Self {
-		RecognitionGame { show_answer: true, ..self.clone() }
-	}
-
-	fn pass_question(&self) -> Option<Self> {
-		if self.remaining == 0 {
-			None
-		} else {
-			Some(RecognitionGame {
-				show_answer: false,
-				active_verb: any_verb(),
-				remaining: self.remaining - 1,
-				audio_ref: NodeRef::default(),
-				play_request_time: now(),
-				play_time: self.play_time,
-			})
-		}
-	}
-
-	fn repeat_question(&self) -> Self {
-		RecognitionGame {
-			show_answer: false,
-			active_verb: any_verb(),
-			remaining: self.remaining,
-			audio_ref: NodeRef::default(),
-			play_request_time: now(),
-			play_time: self.play_time,
-		}
-	}
-}
-
-#[derive(Clone)]
-pub struct VerbChallenge {
-	pub search: String
-}
-
-pub fn any_verb() -> VerbChallenge {
-	VerbChallenge { search: "wasureraremasu".to_string() }
 }

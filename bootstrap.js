@@ -6,4 +6,4 @@ import("./pkg/potential.js")
         module.run_app();
         componentHandler.upgradeDom();
     })
-    .catch(e => console.error("Error importing `./pkg`:", e))
+    .catch(console.error);

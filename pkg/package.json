@@ -1,0 +1,15 @@
+{
+  "name": "potential",
+  "collaborators": [
+    "Jeffrey Yu <92849+wehjin@users.noreply.github.com>"
+  ],
+  "version": "0.1.0",
+  "files": [
+    "potential_bg.wasm",
+    "potential.js",
+    "potential.d.ts"
+  ],
+  "module": "potential.js",
+  "types": "potential.d.ts",
+  "sideEffects": false
+}

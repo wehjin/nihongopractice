@@ -39,7 +39,7 @@ fn recognition_content(link: &ComponentLink<Model>, game: &Challenge) -> Html {
 		<div class="mdl-grid center-items ">
 			<div class="mdl-cell mdl-cell--4-col mdl-cell--middle">
 				<div class="mdl-card mdl-shadow--2dp" style="width:100%">
-					<audio src=audio_url(&game.active_step().audio_tag()) ref=game.audio_ref.clone()/>
+					<audio id="player" controls=true preload="auto" src=audio_url(&game.active_step().audio_tag()) ref=game.audio_ref.clone()/>
 					<div class="mdl-card__title mdl-color--indigo-50">
 						<h2 class="mdl-card__title_text">{ &game.active_step().name }</h2>
 					</div>

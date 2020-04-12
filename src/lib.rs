@@ -2,6 +2,7 @@
 extern crate getrandom;
 #[macro_use]
 extern crate log;
+extern crate percent_encoding;
 extern crate web_sys;
 
 use wasm_bindgen::prelude::*;
@@ -22,7 +23,12 @@ pub fn run_app() -> Result<(), JsValue> {
 	web_logger::init();
 	utils::set_panic_hook();
 	info!("starting up");
-	yew::start_app::<app::Model>();
+	yew::initialize();
+	let window: web_sys::Window = web_sys::window().unwrap();
+	let document: web_sys::Document = window.document().unwrap();
+	let element: web_sys::Element = document.get_element_by_id("yew-entry").unwrap();
+	yew::App::<app::Model>::new().mount(element);
+	yew::run_loop();
 	Ok(())
 }
 

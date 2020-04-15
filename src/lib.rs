@@ -1,8 +1,8 @@
 #![recursion_limit = "512"]
-extern crate getrandom;
 #[macro_use]
 extern crate log;
 extern crate percent_encoding;
+extern crate verb;
 extern crate web_sys;
 
 use wasm_bindgen::prelude::*;
@@ -10,8 +10,8 @@ use wasm_bindgen::prelude::*;
 mod utils;
 mod app;
 mod view;
-mod verb;
 mod recognition;
+mod data;
 
 #[wasm_bindgen]
 extern {

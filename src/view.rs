@@ -2,7 +2,7 @@ use yew::{ComponentLink, html, Html};
 
 use crate::app::{Model, Msg};
 use crate::recognition::{Challenge, ChallengeStep};
-use crate::utils::{audio_url, mdc};
+use crate::utils::mdc;
 
 pub fn idle_page(link: &ComponentLink<Model>) -> Html {
 	mdc::page("Verb Trainer", None, link, &(), idle_content)
@@ -39,7 +39,7 @@ fn recognition_content(link: &ComponentLink<Model>, game: &Challenge) -> Html {
 		<div class="mdl-grid center-items ">
 			<div class="mdl-cell mdl-cell--4-col mdl-cell--middle">
 				<div class="mdl-card mdl-shadow--2dp" style="width:100%">
-					<audio id="player" controls=true preload="auto" src=audio_url(&game.active_step().audio_tag()) ref=game.audio_ref.clone()/>
+					<audio id="player" preload="auto" src=game.active_step().audio_url() ref=game.audio_ref.clone()/>
 					<div class="mdl-card__title mdl-color--indigo-50">
 						<h2 class="mdl-card__title_text">{ &game.active_step().name }</h2>
 					</div>
@@ -65,8 +65,8 @@ fn recognition_content(link: &ComponentLink<Model>, game: &Challenge) -> Html {
 fn recognition_play_and_show(link: &ComponentLink<Model>) -> Html {
 	html! {
 		<div class="mdl-card__actions mdl-card--border">
-			{ mdc::flat_button("Reveal Answer", Msg::ShowAnswer, link) }
 			{ mdc::flat_button("Play Again", Msg::Play(true), link) }
+			{ mdc::flat_button("Reveal Answer", Msg::ShowAnswer, link) }
 		</div>
 	}
 }
@@ -74,8 +74,9 @@ fn recognition_play_and_show(link: &ComponentLink<Model>) -> Html {
 fn recognition_repeat_and_go(link: &ComponentLink<Model>) -> Html {
 	html! {
 		<div class="mdl-card__actions mdl-card--border">
-			{mdc::flat_button("Repeat the question", Msg::Repeat, link)}
-			{mdc::flat_button("Nailed it !", Msg::Pass, link)}
+			{ mdc::flat_button("Play Again", Msg::Play(true), link) }
+			{ mdc::flat_button("Repeat it", Msg::Repeat, link)}
+			{ mdc::flat_button("Nailed it !", Msg::Pass, link)}
 		</div>
 	}
 }

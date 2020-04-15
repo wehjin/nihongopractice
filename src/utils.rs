@@ -1,16 +1,9 @@
-use percent_encoding::{NON_ALPHANUMERIC, utf8_percent_encode};
 use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::JsFuture;
 
 pub fn set_panic_hook() {
 	#[cfg(feature = "console_error_panic_hook")]
 		console_error_panic_hook::set_once();
-}
-
-pub fn audio_url(search: &str) -> String {
-	let textlen = search.chars().count();
-	let encoded_search = utf8_percent_encode(search, NON_ALPHANUMERIC).to_string();
-	format!("https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q={}&tl=ja&total=1&index=0&textlen={}", encoded_search, textlen)
 }
 
 pub fn now() -> f64 {
@@ -32,15 +25,6 @@ pub fn play_audio(audio: &web_sys::HtmlAudioElement) {
 async fn play_audio_from_js(future: JsFuture) -> Result<JsValue, JsValue> {
 	let result = future.await?;
 	Ok(result)
-}
-
-pub fn drop_last_char(s: &str) -> String {
-	let last_len = last_char(s).len();
-	s[..s.len() - last_len].to_string()
-}
-
-pub fn last_char(s: &str) -> String {
-	s.chars().last().unwrap().to_string()
 }
 
 pub mod mdc {

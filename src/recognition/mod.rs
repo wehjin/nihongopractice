@@ -1,20 +1,19 @@
 use yew::NodeRef;
 
+use crate::data;
 use crate::utils::now;
-use crate::verb::{random_audience, random_mode, random_tense, verbs};
+use crate::verb::random;
 
 pub use self::step::*;
 
 mod step;
 
 fn challenge_steps() -> Vec<ChallengeStep> {
-	verbs().into_iter().enumerate().map(|(index, verb)| {
+	data::verbs().into_iter().enumerate().map(|(index, verb)| {
 		ChallengeStep {
 			name: format!("Question {}", index + 1),
 			verb,
-			tense: random_tense(),
-			audience: random_audience(),
-			mode: random_mode(),
+			form: random::form(),
 		}
 	}).collect::<Vec<ChallengeStep>>()
 }

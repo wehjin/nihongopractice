@@ -11,6 +11,7 @@ mod tests {
 		assert_eq!(round.remaining(), 1);
 		assert_eq!(round.passed(), 0);
 		assert_eq!(round.failed(), 0);
+		assert_eq!(round.active_step(), &challenge_step_1())
 	}
 
 	#[test]
@@ -79,7 +80,7 @@ mod tests {
 #[derive(Clone, PartialEq, Debug)]
 pub struct ActiveRound {
 	steps: Vec<ChallengeStep>,
-	step_index: usize,
+	active_index: usize,
 	passed: usize,
 	failed: usize,
 }
@@ -91,7 +92,7 @@ impl ActiveRound {
 		} else {
 			AfterStep::Continue(ActiveRound {
 				steps: self.steps.to_vec(),
-				step_index: self.step_index + 1,
+				active_index: self.active_index + 1,
 				passed: self.passed + 1,
 				failed: self.failed,
 			})
@@ -99,7 +100,7 @@ impl ActiveRound {
 	}
 
 	pub fn fail(&self, future_round: &Option<FutureRound>) -> (AfterStep, FutureRound) {
-		let failed_step = &self.steps[self.step_index];
+		let failed_step = &self.steps[self.active_index];
 		let passed = self.passed;
 		let failed = self.failed + 1;
 		let future_round = match future_round {
@@ -111,15 +112,15 @@ impl ActiveRound {
 			AfterStep::Retire(completed_round)
 		} else {
 			let steps = self.steps.to_vec();
-			let step_index = self.step_index + 1;
-			let active_round = ActiveRound { steps, step_index, passed, failed };
+			let active_index = self.active_index + 1;
+			let active_round = ActiveRound { steps, active_index, passed, failed };
 			AfterStep::Continue(active_round)
 		};
 		(after_step, future_round)
 	}
 
 	pub fn remaining(&self) -> usize {
-		self.steps.len() - self.step_index
+		self.steps.len() - self.active_index
 	}
 
 	pub fn passed(&self) -> usize {
@@ -130,10 +131,14 @@ impl ActiveRound {
 		self.failed
 	}
 
+	pub fn active_step(&self) -> &ChallengeStep {
+		&self.steps[self.active_index]
+	}
+
 	pub fn new(steps: &Vec<ChallengeStep>) -> ActiveRound {
 		ActiveRound {
 			steps: steps.to_vec(),
-			step_index: 0,
+			active_index: 0,
 			passed: 0,
 			failed: 0,
 		}

@@ -25,10 +25,10 @@ fn content(link: &ComponentLink<Model>, game: &Challenge) -> Html {
 						<h2 class="mdl-card__title-text" style="color:#fff"> { "Round 1" } </h2>
 					</div>
 					<div class="mdl-card__supporting-text">
-						{ game.active_step().card_answer(game.show_answer)}
+						{ game.active_step().card_answer(game.is_answer_visible)}
 					</div>
 		            {
-		                if game.show_answer {
+		                if game.is_answer_visible {
 							recognition_repeat_and_go(link)
 		                } else {
 		                    recognition_play_and_show(link)

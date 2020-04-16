@@ -2,7 +2,7 @@ use crate::recognition::ChallengeStep;
 
 #[cfg(test)]
 mod tests {
-	use crate::data::{challenge_step_1, challenge_step_2};
+	use crate::data::tests::{challenge_step_1, challenge_step_2};
 	use crate::recognition::round::{ActiveRound, AfterStep, CompletedRound};
 
 	#[test]
@@ -171,6 +171,10 @@ impl FutureRound {
 
 	pub fn scheduled(&self) -> usize {
 		self.steps.len()
+	}
+
+	pub fn activate(&self) -> ActiveRound {
+		ActiveRound::new(&self.steps)
 	}
 }
 

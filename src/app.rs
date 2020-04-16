@@ -2,8 +2,9 @@ use web_sys::HtmlAudioElement;
 use yew::{Component, ComponentLink, Html, ShouldRender};
 
 use crate::{idle, recognition};
+use crate::data::random_steps;
 use crate::recognition::Challenge;
-use crate::utils::{now, play_audio};
+use crate::utils::play_audio;
 
 pub struct Model {
 	link: ComponentLink<Self>,
@@ -26,7 +27,7 @@ impl Component for Model {
 	fn update(&mut self, msg: Self::Message) -> ShouldRender {
 		let new_state = match msg {
 			Msg::Quit => Some(State::Idle),
-			Msg::Recognition => Some(State::Recognition { game: Challenge::new() }),
+			Msg::Recognition => Some(State::Recognition { game: Challenge::new(&random_steps()) }),
 			Msg::ShowAnswer => match &self.state {
 				State::Recognition { game } => {
 					let new_game = game.show_answer();
@@ -53,13 +54,13 @@ impl Component for Model {
 			Msg::Play(replay) => {
 				if let State::Recognition { ref mut game } = self.state {
 					if replay {
-						game.play_request_time = now();
+						game.play = true;
 					}
-					if game.play_time < game.play_request_time {
+					if game.play {
 						if let Some(audio) = game.audio_ref.cast::<HtmlAudioElement>() {
 							play_audio(&audio)
 						}
-						game.play_time = game.play_request_time;
+						game.play = false;
 					}
 				}
 				None

@@ -6,14 +6,6 @@ pub fn set_panic_hook() {
 		console_error_panic_hook::set_once();
 }
 
-pub fn now() -> f64 {
-	let window = web_sys::window().expect("should have a window in this context");
-	let performance = window
-		.performance()
-		.expect("performance should be available");
-	performance.now()
-}
-
 pub fn play_audio(audio: &web_sys::HtmlAudioElement) {
 	let promise = audio.play().expect("audio should play");
 	let future = wasm_bindgen_futures::JsFuture::from(promise);

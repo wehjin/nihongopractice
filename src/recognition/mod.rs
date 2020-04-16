@@ -1,92 +1,128 @@
 use yew::NodeRef;
 
-use crate::data;
-use crate::utils::now;
-use crate::verb::random;
+use crate::recognition::round::{ActiveRound, AfterStep, CompletedRound, FutureRound};
 
 pub use self::step::*;
 
-pub mod view;
 mod step;
 mod round;
+pub mod view;
 
-#[derive(Clone)]
+#[cfg(test)]
+mod tests {
+	use crate::data::tests::challenge_step_1;
+	use crate::recognition::Challenge;
+
+	#[test]
+	fn new_challenge() {
+		let challenge = challenge_1();
+		assert_eq!(challenge.active_count(), 1);
+		assert_eq!(challenge.active_step(), &challenge_step_1());
+		assert_eq!(challenge.is_answer_visible, false);
+	}
+
+	#[test]
+	fn pass_last_step() {
+		let challenge = challenge_1();
+		assert_eq!(challenge.pass_question(), Option::None)
+	}
+
+	fn challenge_1() -> Challenge {
+		let challenge = Challenge::new(&vec![challenge_step_1()]);
+		challenge
+	}
+}
+
+#[derive(Clone, PartialEq, Debug)]
 pub struct Challenge {
-	active_steps: Vec<ChallengeStep>,
-	resting_steps: Vec<ChallengeStep>,
-	pub show_answer: bool,
+	pub active_round: ActiveRound,
+	pub future_round: Option<FutureRound>,
+	pub completed_rounds: Vec<CompletedRound>,
+	pub is_answer_visible: bool,
 	pub audio_ref: NodeRef,
-	pub play_request_time: f64,
-	pub play_time: f64,
+	pub play: bool,
 }
 
 impl Challenge {
-	pub fn new() -> Self {
-		let now = now();
-		let active_steps = fresh_steps();
-		Challenge {
-			active_steps,
-			resting_steps: Vec::new(),
-			show_answer: false,
-			audio_ref: NodeRef::default(),
-			play_time: now - 3600.0,
-			play_request_time: now,
-		}
-	}
-
-	pub fn active_step(&self) -> &ChallengeStep {
-		self.active_steps.first().expect("Expected active step")
-	}
-
-	pub fn active_count(&self) -> usize {
-		self.active_steps.len()
-	}
-
-	pub fn show_answer(&self) -> Self {
-		Challenge { show_answer: true, ..self.clone() }
-	}
-
 	pub fn pass_question(&self) -> Option<Self> {
-		let step = self.active_steps.first().unwrap().clone();
-		let active_steps: Vec<ChallengeStep> = self.active_steps.iter().skip(1).cloned().collect();
-		if active_steps.is_empty() {
-			None
-		} else {
-			let mut resting_steps = self.resting_steps.to_vec();
-			resting_steps.push(step);
-			Some(Challenge {
-				active_steps,
-				resting_steps,
-				show_answer: false,
-				audio_ref: NodeRef::default(),
-				play_request_time: now(),
-				play_time: self.play_time,
-			})
+		match self.active_round.pass() {
+			AfterStep::Continue(active_round) => {
+				Some(Challenge {
+					active_round,
+					future_round: self.future_round.to_owned(),
+					completed_rounds: self.completed_rounds.to_vec(),
+					is_answer_visible: false,
+					audio_ref: Default::default(),
+					play: true,
+				})
+			}
+			AfterStep::Retire(completed_round) => {
+				let mut completed_rounds = self.completed_rounds.to_vec();
+				completed_rounds.push(completed_round);
+				match &self.future_round {
+					None => None,
+					Some(future_round) => Some(Challenge {
+						active_round: future_round.activate(),
+						future_round: Option::None,
+						completed_rounds,
+						is_answer_visible: false,
+						audio_ref: Default::default(),
+						play: true,
+					}),
+				}
+			}
 		}
 	}
 
 	pub fn repeat_question(&self) -> Self {
-		let step = self.active_steps.first().unwrap().clone();
-		let mut active_steps: Vec<ChallengeStep> = self.active_steps.iter().skip(1).cloned().collect();
-		active_steps.push(step);
-		let resting_steps: Vec<ChallengeStep> = self.resting_steps.clone().into_iter().collect();
-		Challenge {
-			active_steps,
-			resting_steps,
-			show_answer: false,
-			audio_ref: NodeRef::default(),
-			play_request_time: now(),
-			play_time: self.play_time,
+		let (after_step, future_round) = self.active_round.fail(&self.future_round);
+		match after_step {
+			AfterStep::Continue(active_round) => {
+				Challenge {
+					active_round,
+					future_round: Some(future_round),
+					completed_rounds: self.completed_rounds.to_vec(),
+					is_answer_visible: false,
+					audio_ref: Default::default(),
+					play: true,
+				}
+			}
+			AfterStep::Retire(completed_round) => {
+				let mut completed_rounds = self.completed_rounds.to_vec();
+				completed_rounds.push(completed_round);
+				Challenge {
+					active_round: future_round.activate(),
+					future_round: None,
+					completed_rounds,
+					is_answer_visible: false,
+					audio_ref: Default::default(),
+					play: true,
+				}
+			}
 		}
 	}
-}
 
-fn fresh_steps() -> Vec<ChallengeStep> {
-	data::n_shuffled(20).into_iter().enumerate().map(|(index, verb)| {
-		ChallengeStep {
-			name: format!("Question {}", index + 1),
-			verb,
-			form: random::form(),
+	pub fn show_answer(&self) -> Self {
+		Challenge { is_answer_visible: true, ..self.clone() }
+	}
+
+	pub fn active_step(&self) -> &ChallengeStep {
+		self.active_round.active_step()
+	}
+
+	pub fn active_count(&self) -> usize {
+		self.active_round.remaining()
+	}
+
+	pub fn new(steps: &Vec<ChallengeStep>) -> Self {
+		let active_round = ActiveRound::new(steps);
+		Challenge {
+			active_round,
+			future_round: Option::None,
+			completed_rounds: Vec::new(),
+			is_answer_visible: false,
+			audio_ref: NodeRef::default(),
+			play: true,
 		}
-	}).collect::<Vec<ChallengeStep>>()
+	}
 }

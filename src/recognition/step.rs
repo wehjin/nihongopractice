@@ -2,23 +2,6 @@ use verb::Form;
 
 use crate::verb::Verb;
 
-#[derive(Clone, PartialEq, Debug)]
-pub struct ChallengeStep {
-	pub name: String,
-	pub verb: Verb,
-	pub form: Form,
-}
-
-impl ChallengeStep {
-	pub fn audio_url(&self) -> String {
-		format!("clips/{}/{}.mp3", self.verb.name(), self.form.name())
-	}
-
-	pub fn answer(&self) -> String {
-		self.verb.translate(self.form.tense, self.form.polarity, self.form.mode)
-	}
-}
-
 #[cfg(test)]
 mod tests {
 	use verb::{Form, Polarity};
@@ -53,5 +36,22 @@ mod tests {
 
 	fn miru() -> Verb {
 		Verb { ch: 100, kind: Kind::Ru, search: "見る".to_string(), english: "see".to_string() }
+	}
+}
+
+#[derive(Clone, PartialEq, Debug)]
+pub struct ChallengeStep {
+	pub name: String,
+	pub verb: Verb,
+	pub form: Form,
+}
+
+impl ChallengeStep {
+	pub fn audio_url(&self) -> String {
+		format!("clips/{}/{}.mp3", self.verb.name(), self.form.name())
+	}
+
+	pub fn answer(&self) -> String {
+		self.verb.translate(self.form.tense, self.form.polarity, self.form.mode)
 	}
 }

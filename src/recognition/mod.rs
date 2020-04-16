@@ -9,16 +9,6 @@ pub use self::step::*;
 mod step;
 pub mod view;
 
-fn challenge_steps() -> Vec<ChallengeStep> {
-	data::n_shuffled(20).into_iter().enumerate().map(|(index, verb)| {
-		ChallengeStep {
-			name: format!("Question {}", index + 1),
-			verb,
-			form: random::form(),
-		}
-	}).collect::<Vec<ChallengeStep>>()
-}
-
 #[derive(Clone)]
 pub struct Challenge {
 	active_steps: Vec<ChallengeStep>,
@@ -32,7 +22,7 @@ pub struct Challenge {
 impl Challenge {
 	pub fn new() -> Self {
 		let now = now();
-		let active_steps = challenge_steps();
+		let active_steps = fresh_steps();
 		Challenge {
 			active_steps,
 			resting_steps: Vec::new(),
@@ -88,4 +78,14 @@ impl Challenge {
 			play_time: self.play_time,
 		}
 	}
+}
+
+fn fresh_steps() -> Vec<ChallengeStep> {
+	data::n_shuffled(20).into_iter().enumerate().map(|(index, verb)| {
+		ChallengeStep {
+			name: format!("Question {}", index + 1),
+			verb,
+			form: random::form(),
+		}
+	}).collect::<Vec<ChallengeStep>>()
 }

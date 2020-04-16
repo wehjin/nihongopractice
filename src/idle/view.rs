@@ -22,10 +22,7 @@ fn content(link: &ComponentLink<Model>, _: &()) -> Html {
 						{"Listen to and translate 20 verbs selected at random from chapters 1-17."}
 					</div>
 					<div class="mdl-card__actions mdl-card--border">
-						<button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-						    onclick=link.callback(|_| Msg::Recognition)>
-							{"Get Started"}
-						</button>
+						{ mdc::flat_button("Get Started", Msg::Recognition, link) }
 					</div>
 				</div>
 			</div>

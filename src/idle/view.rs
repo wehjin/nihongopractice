@@ -12,8 +12,8 @@ fn content(link: &ComponentLink<Model>, _: &()) -> Html {
 		<div class="mdl-grid">
 			<div class="mdl-cell mdl-cell--4-col">
 				<div class=" mdl-card mdl-shadow--2dp">
-					<div class="mdl-card__title mdl-color--primary-dark">
-					    <h2 class="mdl-card__title-text" style="color:#fff">{"Recognition"}</h2>
+					<div class="mdl-card__title mdl-color--primary-dark" style="color:#fff">
+					    <h2 class="mdl-card__title-text">{"Recognition"}</h2>
 					</div>
 					<div class="mdl-card__title mdl-color--primary-dark">
 						<div class="mdl-card__subtitle-text"></div>

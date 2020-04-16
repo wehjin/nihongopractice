@@ -1,4 +1,5 @@
 #![recursion_limit = "512"]
+extern crate getrandom;
 #[macro_use]
 extern crate log;
 extern crate percent_encoding;

@@ -42,17 +42,6 @@ pub mod mdc {
 		}
 	}
 
-	pub fn center_flat_button(label: &str, msg: Msg, link: &ComponentLink<Model>) -> Html {
-		html! {
-        <button
-            class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"
-            style="width:100%"
-            onclick=link.callback(move |_| msg)>
-            { label }
-        </button>
-		}
-	}
-
 	pub fn page<Ctx>(
 		title: &str,
 		action: Option<String>,
@@ -84,19 +73,5 @@ pub mod mdc {
 
 	pub fn empty_div() -> Html {
 		html! {}
-	}
-
-	pub fn text_list_item(text: &str) -> Html {
-		html! {
-			<li class="mdl-list__item">
-				{primary_span(text)}
-			</li>
-		}
-	}
-
-	pub fn primary_span(text: &str) -> Html {
-		html! {
-			<span class="mdl-list__item-primary-content">{text}</span>
-		}
 	}
 }

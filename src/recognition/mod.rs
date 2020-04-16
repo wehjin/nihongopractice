@@ -10,7 +10,7 @@ mod step;
 pub mod view;
 
 fn challenge_steps() -> Vec<ChallengeStep> {
-	data::verbs().into_iter().enumerate().map(|(index, verb)| {
+	data::n_shuffled(20).into_iter().enumerate().map(|(index, verb)| {
 		ChallengeStep {
 			name: format!("Question {}", index + 1),
 			verb,

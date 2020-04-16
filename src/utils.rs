@@ -61,7 +61,7 @@ pub mod mdc {
 		content: impl Fn(&ComponentLink<Model>, &Ctx) -> Html,
 	) -> Html {
 		html! {
-			<div class="mdl-layout mdl-js-layout">
+			<div class="mdl-layout mdl-js-layout mdl-layout--no-drawer-button">
 			  <header class="mdl-layout__header  mdl-layout__header--scroll">
 			    <div class="mdl-layout__header-row">
 			      <span class="mdl-layout-title">{title}</span>
@@ -71,12 +71,6 @@ pub mod mdc {
 			      </nav>
 			    </div>
 			  </header>
-			  <div class="mdl-layout__drawer">
-			    <span class="mdl-layout-title">{title}</span>
-			    <nav class="mdl-navigation">
-			        { if let Some(ref label) = action { nav_link(label)} else { empty_div()}}
-			    </nav>
-			  </div>
 			  <main class="mdl-layout__content">{content(link, ctx)}</main>
 			</div>
 		}

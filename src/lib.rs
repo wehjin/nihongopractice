@@ -24,12 +24,7 @@ pub fn run_app() -> Result<(), JsValue> {
 	web_logger::init();
 	utils::set_panic_hook();
 	info!("starting up");
-	yew::initialize();
-	let window: web_sys::Window = web_sys::window().unwrap();
-	let document: web_sys::Document = window.document().unwrap();
-	let element: web_sys::Element = document.get_element_by_id("yew-entry").unwrap();
-	yew::App::<app::Model>::new().mount(element);
-	yew::run_loop();
+	yew::start_app::<app::Model>();
 	Ok(())
 }
 

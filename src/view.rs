@@ -4,25 +4,6 @@ use crate::app::{Model, Msg};
 use crate::recognition::{Challenge, ChallengeStep};
 use crate::utils::mdc;
 
-pub fn idle_page(link: &ComponentLink<Model>) -> Html {
-	mdc::page("Verb Trainer", None, link, &(), idle_content)
-}
-
-fn idle_content(link: &ComponentLink<Model>, _: &()) -> Html {
-	html! {
-		<div class="mdl-grid center-items">
-			<div class="mdl-cell mdl-cell--4-col mdl-cell--middle">
-		        <button
-		            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
-		            style="width:100%"
-		            onclick=link.callback(|_| Msg::Recognition)>
-		            { "Recognition Challenge" }
-		        </button>
-			</div>
-		</div>
-    }
-}
-
 pub fn recognition_page(game: &Challenge, link: &ComponentLink<Model>) -> Html {
 	link.send_message(Msg::Play(false));
 	let count = game.active_count();

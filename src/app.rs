@@ -1,6 +1,7 @@
 use web_sys::HtmlAudioElement;
 use yew::{Component, ComponentLink, Html, ShouldRender};
 
+use crate::idle;
 use crate::recognition::Challenge;
 use crate::utils::{now, play_audio};
 
@@ -77,7 +78,7 @@ impl Component for Model {
 
 	fn view(&self) -> Html {
 		match &self.state {
-			State::Idle => view::idle_page(&self.link),
+			State::Idle => idle::view::page(&self.link),
 			State::Recognition { game } => view::recognition_page(game, &self.link),
 		}
 	}

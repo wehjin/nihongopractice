@@ -12,6 +12,7 @@ mod app;
 mod view;
 mod recognition;
 mod data;
+mod idle;
 
 #[wasm_bindgen]
 extern {

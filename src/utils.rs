@@ -61,8 +61,8 @@ pub mod mdc {
 		content: impl Fn(&ComponentLink<Model>, &Ctx) -> Html,
 	) -> Html {
 		html! {
-			<div class="mdl-layout mdl-js-layout mdl-layout--no-drawer-button">
-			  <header class="mdl-layout__header  mdl-layout__header--scroll">
+			<div class="mdl-layout mdl-js-layout mdl-layout--no-drawer-button mdl-layout--fixed-header">
+			  <header class="mdl-layout__header">
 			    <div class="mdl-layout__header-row">
 			      <span class="mdl-layout-title">{title}</span>
 			      <div class="mdl-layout-spacer"></div>

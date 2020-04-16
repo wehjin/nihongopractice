@@ -6,8 +6,9 @@ use crate::verb::random;
 
 pub use self::step::*;
 
-mod step;
 pub mod view;
+mod step;
+mod round;
 
 #[derive(Clone)]
 pub struct Challenge {

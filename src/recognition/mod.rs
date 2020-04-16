@@ -7,6 +7,7 @@ use crate::verb::random;
 pub use self::step::*;
 
 mod step;
+pub mod view;
 
 fn challenge_steps() -> Vec<ChallengeStep> {
 	data::verbs().into_iter().enumerate().map(|(index, verb)| {

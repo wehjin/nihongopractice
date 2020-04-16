@@ -9,7 +9,6 @@ use wasm_bindgen::prelude::*;
 
 mod utils;
 mod app;
-mod view;
 mod recognition;
 mod data;
 mod idle;

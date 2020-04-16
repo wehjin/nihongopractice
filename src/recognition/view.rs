@@ -4,7 +4,7 @@ use crate::app::{Model, Msg};
 use crate::recognition::{Challenge, ChallengeStep};
 use crate::utils::mdc;
 
-pub fn recognition_page(game: &Challenge, link: &ComponentLink<Model>) -> Html {
+pub fn page(game: &Challenge, link: &ComponentLink<Model>) -> Html {
 	link.send_message(Msg::Play(false));
 	let count = game.active_count();
 	let page_action = if count == 1 {
@@ -12,10 +12,10 @@ pub fn recognition_page(game: &Challenge, link: &ComponentLink<Model>) -> Html {
 	} else {
 		Some(format!("Quit ({} to go)", count).to_uppercase())
 	};
-	mdc::page("Recognition", page_action, link, game, recognition_content)
+	mdc::page("Recognition", page_action, link, game, content)
 }
 
-fn recognition_content(link: &ComponentLink<Model>, game: &Challenge) -> Html {
+fn content(link: &ComponentLink<Model>, game: &Challenge) -> Html {
 	html! {
 		<div class="mdl-grid center-items ">
 			<div class="mdl-cell mdl-cell--4-col mdl-cell--middle">
@@ -76,3 +76,5 @@ impl ChallengeStep {
 		}
 	}
 }
+
+

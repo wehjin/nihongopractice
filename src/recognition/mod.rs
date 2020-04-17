@@ -16,7 +16,7 @@ mod tests {
 	#[test]
 	fn new_challenge() {
 		let challenge = challenge_1();
-		assert_eq!(challenge.active_count(), 1);
+		assert_eq!(challenge.active_round.remaining(), 1);
 		assert_eq!(challenge.active_step(), &challenge_step_1());
 		assert_eq!(challenge.is_answer_visible, false);
 	}
@@ -108,10 +108,6 @@ impl Challenge {
 
 	pub fn active_step(&self) -> &ChallengeStep {
 		self.active_round.active_step()
-	}
-
-	pub fn active_count(&self) -> usize {
-		self.active_round.remaining()
 	}
 
 	pub fn new(steps: &Vec<ChallengeStep>) -> Self {

@@ -5,18 +5,20 @@ use crate::recognition::{Challenge, ChallengeStep};
 use crate::recognition::round::CompletedRound;
 use crate::utils::mdc;
 
+pub const TITLE: &str = "Verb Recognition";
+
 pub fn page(game: &Challenge, link: &ComponentLink<Model>) -> Html {
 	link.send_message(Msg::Play(false));
 	let page_action = Some(format!("Quit").to_uppercase());
-	mdc::page("Recognition", page_action, link, game, content)
+	mdc::page(TITLE, page_action, link, game, content)
 }
 
 fn content(link: &ComponentLink<Model>, game: &Challenge) -> Html {
-	let completed_rounds = game.completed_rounds.iter().enumerate().map(completed_round);
+	let completed_rounds = game.completed_rounds.iter().enumerate().map(completed_round).rev();
 	html! {
 		<div class="mdl-grid">
-			{ for completed_rounds }
 			{ active_round(link, game) }
+			{ for completed_rounds }
 		</div>
 	}
 }
@@ -29,10 +31,10 @@ fn completed_round(index_round: (usize, &CompletedRound)) -> Html {
 	html! {
 		<div class="mdl-cell mdl-cell--4-col">
 			<div class="mdl-card mdl-shadow--2dp quiz-card">
-				<div class="mdl-card__title mdl-color--primary-dark">
+				<div class="mdl-card__title mdl-color--primary">
 					<div class="mdl-card__subtitle-text" style="color:#fff8"> { status } </div>
 				</div>
-				<div class="mdl-card__title mdl-color--primary-dark">
+				<div class="mdl-card__title mdl-color--primary">
 					<h2 class="mdl-card__title-text" style="color:#fff"> { title } </h2>
 				</div>
 				<div class="mdl-card__supporting-text">
@@ -61,7 +63,7 @@ fn active_round(link: &ComponentLink<Model>, game: &Challenge) -> Html {
 					<h2 class="mdl-card__title-text" style="color:#fff"> { title } </h2>
 				</div>
 				<div class="mdl-card__supporting-text">
-					<p>{ "Write your answer down on paper. " }</p>
+					<p>{ "Write the answer down in english." }</p>
 					{ game.active_step().card_answer(game.is_answer_visible)}
 				</div>
 	            {

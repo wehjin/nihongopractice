@@ -1,6 +1,7 @@
 use yew::{ComponentLink, Html, html};
 
 use crate::app::{Model, Msg};
+use crate::data::DEFAULT_CHALLENGE_SIZE;
 use crate::utils::mdc;
 
 pub fn page(link: &ComponentLink<Model>) -> Html {
@@ -8,6 +9,10 @@ pub fn page(link: &ComponentLink<Model>) -> Html {
 }
 
 fn content(link: &ComponentLink<Model>, _: &()) -> Html {
+	let message = format!(
+		"Listen to and translate {} verbs selected at random from chapters 1-17.",
+		DEFAULT_CHALLENGE_SIZE
+	);
 	html! {
 		<div class="mdl-grid">
 			<div class="mdl-cell mdl-cell--4-col">
@@ -18,9 +23,7 @@ fn content(link: &ComponentLink<Model>, _: &()) -> Html {
 					<div class="mdl-card__title mdl-color--primary-dark">
 						<div class="mdl-card__subtitle-text"></div>
 					</div>
-					<div class="mdl-card__supporting-text">
-						{"Listen to and translate 20 verbs selected at random from chapters 1-17."}
-					</div>
+					<div class="mdl-card__supporting-text"> {message} </div>
 					<div class="mdl-card__actions mdl-card--border">
 						{ mdc::flat_button("Get Started", Msg::Recognition, link) }
 					</div>

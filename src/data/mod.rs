@@ -57,7 +57,7 @@ pub(crate) mod tests {
 	}
 }
 
-const DEFAULT_CHALLENGE_SIZE: usize = 2;
+pub const DEFAULT_CHALLENGE_SIZE: usize = 10;
 
 pub fn random_steps() -> Vec<ChallengeStep> {
 	data::n_shuffled(DEFAULT_CHALLENGE_SIZE).into_iter().enumerate().map(|(index, verb)| {

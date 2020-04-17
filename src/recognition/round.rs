@@ -9,8 +9,8 @@ mod tests {
 	fn new() {
 		let round = active_round_1();
 		assert_eq!(round.remaining(), 1);
-		assert_eq!(round.passed(), 0);
-		assert_eq!(round.failed(), 0);
+		assert_eq!(round.passed, 0);
+		assert_eq!(round.failed, 0);
 		assert_eq!(round.active_step(), &challenge_step_1())
 	}
 
@@ -30,7 +30,7 @@ mod tests {
 	fn fail_last_step() {
 		let round = active_round_1();
 		let (after, future) = round.fail(&Option::None);
-		assert_eq!(future.scheduled(), 1);
+		assert_eq!(future.steps.len(), 1);
 		match after {
 			AfterStep::Continue(_) => panic!("Last fail must not continue"),
 			AfterStep::Retire(completed) => {
@@ -46,8 +46,8 @@ mod tests {
 			AfterStep::Retire(_) => panic!("First pass must not retire"),
 			AfterStep::Continue(next) => {
 				assert_eq!(next.remaining(), 1);
-				assert_eq!(next.passed(), 1);
-				assert_eq!(next.failed(), 0);
+				assert_eq!(next.passed, 1);
+				assert_eq!(next.failed, 0);
 			}
 		}
 	}
@@ -56,13 +56,13 @@ mod tests {
 	fn fail_first_step() {
 		let round = active_round_2();
 		let (after, future) = round.fail(&Option::None);
-		assert_eq!(1, future.scheduled(), "scheduled");
+		assert_eq!(1, future.steps.len(), "scheduled");
 		match after {
 			AfterStep::Retire(_) => panic!("First fail must not retire"),
 			AfterStep::Continue(next) => {
 				assert_eq!(next.remaining(), 1, "remaining");
-				assert_eq!(next.passed(), 0, "passed");
-				assert_eq!(next.failed(), 1, "failed");
+				assert_eq!(next.passed, 0, "passed");
+				assert_eq!(next.failed, 1, "failed");
 			}
 		}
 	}
@@ -123,14 +123,6 @@ impl ActiveRound {
 		self.steps.len() - self.active_index
 	}
 
-	pub fn passed(&self) -> usize {
-		self.passed
-	}
-
-	pub fn failed(&self) -> usize {
-		self.failed
-	}
-
 	pub fn active_step(&self) -> &ChallengeStep {
 		&self.steps[self.active_index]
 	}
@@ -153,7 +145,7 @@ pub enum AfterStep {
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct FutureRound {
-	steps: Vec<ChallengeStep>,
+	pub steps: Vec<ChallengeStep>,
 }
 
 impl FutureRound {
@@ -169,10 +161,6 @@ impl FutureRound {
 		FutureRound { steps }
 	}
 
-	pub fn scheduled(&self) -> usize {
-		self.steps.len()
-	}
-
 	pub fn activate(&self) -> ActiveRound {
 		ActiveRound::new(&self.steps)
 	}
@@ -180,6 +168,6 @@ impl FutureRound {
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct CompletedRound {
-	passed: usize,
-	failed: usize,
+	pub passed: usize,
+	pub failed: usize,
 }

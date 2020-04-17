@@ -11,6 +11,7 @@ pub fn page(game: &Challenge, link: &ComponentLink<Model>) -> Html {
 }
 
 fn content(link: &ComponentLink<Model>, game: &Challenge) -> Html {
+	let round_name = format!("Round {}", game.completed_rounds.len() + 1);
 	html! {
 		<div class="mdl-grid">
 			<div class="mdl-cell mdl-cell--4-col">
@@ -22,7 +23,7 @@ fn content(link: &ComponentLink<Model>, game: &Challenge) -> Html {
 						</div>
 					</div>
 					<div class="mdl-card__title mdl-color--primary-dark">
-						<h2 class="mdl-card__title-text" style="color:#fff"> { "Round 1" } </h2>
+						<h2 class="mdl-card__title-text" style="color:#fff"> { round_name } </h2>
 					</div>
 					<div class="mdl-card__supporting-text">
 						{ game.active_step().card_answer(game.is_answer_visible)}

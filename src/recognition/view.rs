@@ -30,14 +30,14 @@ fn completed_round(index_round: (usize, &CompletedRound)) -> Html {
 	let details = format!("{} of {} accepted", round.passed, round.passed + round.failed);
 	html! {
 		<div class="mdl-cell mdl-cell--4-col">
-			<div class="mdl-card mdl-shadow--2dp quiz-card">
+			<div class="mdl-card quiz-card mdl-color--grey-50">
 				<div class="mdl-card__title mdl-color--primary">
 					<div class="mdl-card__subtitle-text" style="color:#fff8"> { status } </div>
 				</div>
 				<div class="mdl-card__title mdl-color--primary">
 					<h2 class="mdl-card__title-text" style="color:#fff"> { title } </h2>
 				</div>
-				<div class="mdl-card__supporting-text">
+				<div class="mdl-card__supporting-text .mdl-color--blue-grey-100">
 				    <p>{ details }</p>
 				</div>
 			</div>

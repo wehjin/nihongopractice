@@ -59,6 +59,23 @@ pub(crate) mod tests {
 
 pub const DEFAULT_CHALLENGE_SIZE: usize = 10;
 
+#[cfg(ignore)]
+pub fn verb_steps() -> Vec<ChallengeStep> {
+	let verb = Verb {
+		ch: 15,
+		kind: Kind::U,
+		search: "つくる".to_string(),
+		english: "create".to_string(),
+	};
+	verb::all::forms().into_iter().enumerate().map(|(index, form)| {
+		ChallengeStep {
+			name: format!("Verb {}", verb.english.to_owned()),
+			verb: verb.clone(),
+			form,
+		}
+	}).collect()
+}
+
 pub fn random_steps() -> Vec<ChallengeStep> {
 	data::n_shuffled(DEFAULT_CHALLENGE_SIZE).into_iter().enumerate().map(|(index, verb)| {
 		ChallengeStep {

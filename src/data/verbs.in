@@ -23,7 +23,7 @@ Verb { ch: 5, kind: Kind::U, search: "うたう".to_string(), english: "sing".to
 Verb { ch: 5, kind: Kind::U, search: "わかる".to_string(), english: "understand".to_string() },
 Verb { ch: 6, kind: Kind::Suru, search: "けんぶつする".to_string(), english: "sightsee".to_string() },
 Verb { ch: 6, kind: Kind::Suru, search: "びっくりする".to_string(), english: "feel surprised".to_string() },
-Verb { ch: 6, kind: Kind::Suru, search: "りょこうする".to_string(), english: "do travel".to_string() },
+Verb { ch: 6, kind: Kind::Suru, search: "りょこうする".to_string(), english: "travel".to_string() },
 Verb { ch: 6, kind: Kind::Ru, search: "いる".to_string(), english: "exist animate".to_string() },
 Verb { ch: 6, kind: Kind::U, search: "ある".to_string(), english: "exist inanimate".to_string() },
 Verb { ch: 7, kind: Kind::Suru, search: "キスする".to_string(), english: "kiss".to_string() },

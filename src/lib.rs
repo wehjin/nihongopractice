@@ -13,6 +13,7 @@ mod app;
 mod recognition;
 mod data;
 mod idle;
+mod mdc;
 
 #[wasm_bindgen]
 extern {

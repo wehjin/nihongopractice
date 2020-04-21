@@ -1,9 +1,9 @@
 use yew::{ComponentLink, html, Html};
 
 use crate::app::{Model, Msg};
+use crate::mdc;
 use crate::recognition::{Challenge, ChallengeStep};
 use crate::recognition::round::CompletedRound;
-use crate::utils::mdc;
 
 pub const TITLE: &str = "Verb Recognition";
 

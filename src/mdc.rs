@@ -5,17 +5,47 @@ use crate::app::{Model, Msg};
 pub mod button {
 	use yew::{Callback, Html, html};
 
-	pub fn flat(label: &str, callback: Callback<web_sys::MouseEvent>) -> Html {
+	pub fn flat(label: &str, on_click: impl Fn() + 'static) -> Html {
+		let on_click: Callback<web_sys::MouseEvent> = Callback::from(move |_| on_click());
 		html! {
-	        <button class="mdl-button mdl-js-button mdl-button--primary" onclick=callback>
+	        <button class="mdl-button mdl-js-button mdl-button--primary" onclick=on_click>
 	            { label }
 	        </button>
 		}
 	}
 }
 
+pub mod card {
+	use yew::{Html, html};
+
+	use super::*;
+
+	pub fn grid(title: &str, message: &str, (label, action): (&str, impl Fn() + 'static)) -> Html {
+		let button = button::flat(label, action);
+		html! {
+			<div class="mdl-cell mdl-cell--4-col">
+				<div class=" mdl-card mdl-shadow--2dp tool-card">
+					<div class="mdl-card__title mdl-color--primary-dark" style="color:#fff">
+					    <h2 class="mdl-card__title-text">{ title }</h2>
+					</div>
+					<div class="mdl-card__title mdl-color--primary-dark">
+						<div class="mdl-card__subtitle-text"></div>
+					</div>
+					<div class="mdl-card__supporting-text" style="height: 3em">
+					    {message}
+					</div>
+					<div class="mdl-card__actions mdl-card--border">
+						{ button }
+					</div>
+				</div>
+			</div>
+		}
+	}
+}
+
 pub fn flat_button(label: &str, msg: Msg, link: &ComponentLink<Model>) -> Html {
-	button::flat(label, link.callback(move |_| msg))
+	let link = link.clone();
+	button::flat(label, move || { link.send_message(msg); })
 }
 
 pub fn page<Ctx>(

@@ -31,3 +31,8 @@ pub fn run_app() -> Result<(), JsValue> {
 	Ok(())
 }
 
+#[wasm_bindgen]
+extern "C" {
+	#[wasm_bindgen(js_namespace = componentHandler)]
+	fn upgradeDom();
+}

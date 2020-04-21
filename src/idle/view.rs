@@ -3,6 +3,7 @@ use yew::{ComponentLink, Html, html};
 use crate::app::{Model, Msg};
 use crate::data::DEFAULT_CHALLENGE_SIZE;
 use crate::mdc;
+use crate::shadow;
 
 pub fn page(link: &ComponentLink<Model>) -> Html {
 	mdc::page("日本語 Tools", None, link, &(), content)
@@ -23,7 +24,7 @@ fn shadow(link: ComponentLink<Model>) -> Html {
 	mdc::card::grid(
 		"Shadow 17.1",
 		"Listen to and at the same time speak each line in the dialog.",
-		("Get Started", move || link.send_message(Msg::Shadow)),
+		("Get Started", move || link.send_message(Msg::Shadow(shadow::Msg::Start))),
 	)
 }
 

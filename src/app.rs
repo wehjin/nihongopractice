@@ -27,7 +27,18 @@ impl Component for Model {
 	fn update(&mut self, msg: Self::Message) -> ShouldRender {
 		let new_state = match msg {
 			Msg::Quit => Some(State::Idle),
-			Msg::Shadow => Some(State::Shadow(Default::default())),
+			Msg::Shadow(shadow_msg) => {
+				match &self.state {
+					State::Idle => Some(shadow::Model::start()),
+					State::Recognition { .. } => None,
+					State::Shadow(shadow_model) => {
+						match shadow_msg {
+							shadow::Msg::Start => Some(shadow::Model::start()),
+							shadow::Msg::FinishedLoading => Some(shadow_model.load()),
+						}
+					}
+				}.map(|it| State::Shadow(it))
+			}
 			Msg::Recognition => Some(State::Recognition { game: Challenge::new(&random_steps()) }),
 			Msg::ShowAnswer => match &self.state {
 				State::Recognition { game } => {
@@ -99,5 +110,5 @@ pub enum Msg {
 	Repeat,
 	Pass,
 	Play(bool),
-	Shadow,
+	Shadow(shadow::Msg),
 }

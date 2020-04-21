@@ -12,9 +12,9 @@ mod utils;
 mod app;
 mod data;
 mod mdc;
-mod recognition;
-mod idle;
-mod shadow;
+pub mod recognition;
+pub mod idle;
+pub mod shadow;
 
 
 #[wasm_bindgen]

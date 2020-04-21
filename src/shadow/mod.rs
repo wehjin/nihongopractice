@@ -2,14 +2,22 @@ use yew::NodeRef;
 
 pub mod view;
 
-pub struct Model {
-	pub audio_ref: NodeRef,
+#[derive(Clone, Debug)]
+pub enum Model {
+	Loading,
+	Loaded { audio_ref: NodeRef },
 }
 
-impl Default for Model {
-	fn default() -> Self {
-		Model {
-			audio_ref: Default::default()
-		}
+impl Model {
+	pub fn start() -> Self { Model::Loading }
+
+	pub fn load(&self) -> Self {
+		Model::Loaded { audio_ref: Default::default() }
 	}
+}
+
+#[derive(Copy, Clone, Eq, PartialEq, Debug)]
+pub enum Msg {
+	Start,
+	FinishedLoading,
 }

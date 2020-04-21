@@ -1,7 +1,7 @@
 use web_sys::HtmlAudioElement;
 use yew::{Component, ComponentLink, Html, ShouldRender};
 
-use crate::{idle, recognition};
+use crate::{idle, recognition, shadow};
 use crate::data::random_steps;
 use crate::recognition::Challenge;
 use crate::utils::play_audio;
@@ -27,6 +27,7 @@ impl Component for Model {
 	fn update(&mut self, msg: Self::Message) -> ShouldRender {
 		let new_state = match msg {
 			Msg::Quit => Some(State::Idle),
+			Msg::Shadow => Some(State::Shadow(Default::default())),
 			Msg::Recognition => Some(State::Recognition { game: Challenge::new(&random_steps()) }),
 			Msg::ShowAnswer => match &self.state {
 				State::Recognition { game } => {
@@ -79,6 +80,9 @@ impl Component for Model {
 		match &self.state {
 			State::Idle => idle::view::page(&self.link),
 			State::Recognition { game } => recognition::view::page(game, &self.link),
+			State::Shadow(model) => {
+				shadow::view::page(model, &self.link)
+			}
 		}
 	}
 }
@@ -86,6 +90,7 @@ impl Component for Model {
 pub enum State {
 	Idle,
 	Recognition { game: Challenge },
+	Shadow(shadow::Model),
 }
 
 #[derive(Copy, Clone)]
@@ -96,4 +101,5 @@ pub enum Msg {
 	Repeat,
 	Pass,
 	Play(bool),
+	Shadow,
 }

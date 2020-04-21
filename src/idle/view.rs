@@ -24,7 +24,7 @@ fn shadow(link: ComponentLink<Model>) -> Html {
 	mdc::card::grid(
 		"Shadow 17.1",
 		"Speak dialog lines while listening.",
-		("Get Started", move || link.send_message(Msg::Recognition)),
+		("Get Started", move || link.send_message(Msg::Shadow)),
 	)
 }
 

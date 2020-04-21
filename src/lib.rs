@@ -10,10 +10,12 @@ use wasm_bindgen::prelude::*;
 
 mod utils;
 mod app;
-mod recognition;
 mod data;
-mod idle;
 mod mdc;
+mod recognition;
+mod idle;
+mod shadow;
+
 
 #[wasm_bindgen]
 extern {

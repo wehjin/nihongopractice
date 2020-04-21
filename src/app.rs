@@ -80,9 +80,7 @@ impl Component for Model {
 		match &self.state {
 			State::Idle => idle::view::page(&self.link),
 			State::Recognition { game } => recognition::view::page(game, &self.link),
-			State::Shadow(model) => {
-				shadow::view::page(model, &self.link)
-			}
+			State::Shadow(model) => shadow::view::page(model, &self.link),
 		}
 	}
 }

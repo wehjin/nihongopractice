@@ -3,7 +3,6 @@ use yew::{ComponentLink, Html, html};
 use crate::app::{Model, Msg};
 use crate::data::DEFAULT_CHALLENGE_SIZE;
 use crate::mdc;
-use crate::recognition;
 
 pub fn page(link: &ComponentLink<Model>) -> Html {
 	mdc::page("日本語 Tools", None, link, &(), content)
@@ -23,18 +22,15 @@ fn content(link: &ComponentLink<Model>, _: &()) -> Html {
 fn shadow(link: ComponentLink<Model>) -> Html {
 	mdc::card::grid(
 		"Shadow 17.1",
-		"Speak dialog lines while listening.",
+		"Listen to and at the same time speak each line in the dialog.",
 		("Get Started", move || link.send_message(Msg::Shadow)),
 	)
 }
 
 fn recognition(link: ComponentLink<Model>) -> Html {
 	mdc::card::grid(
-		recognition::view::TITLE,
-		&format!(
-			"Listen to and translate {} verbs selected at random from chapters 1-17.",
-			DEFAULT_CHALLENGE_SIZE
-		),
+		&format!("Verb Recognition {}", DEFAULT_CHALLENGE_SIZE),
+		"Listen to and write down the meaning of each verb selected at random from chapters 1-17.",
 		("Get Started", move || link.send_message(Msg::Recognition)),
 	)
 }

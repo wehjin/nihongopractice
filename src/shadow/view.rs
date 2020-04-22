@@ -23,43 +23,30 @@ fn content(link: &ComponentLink<app::Model>, model: &shadow::Model) -> Html {
 
 fn authorized(audio_ref: &NodeRef, shadow: &Shadow, link: &ComponentLink<app::Model>) -> Html {
 	let audio = mdc::audio::hidden("shadow-player", &shadow.audio_url, audio_ref);
-	let cell_classes = &(vec![
-		"mdl_cell",
-		"mdl-cell--4-col-phone",
-		"mdl-cell--6-col-tablet mdl-cell--1-offset-tablet",
-		"mdl-cell--8-col-desktop mdl-cell--2-offset-desktop",
-	].join(" "));
 	html! {
 	<>
-	{ audio }
-	<div class="mdl-grid">
-		<div class=cell_classes>
-		<table class="mdl-data-table mdl-js-data-table" style="width:100%;">
-			<thead>
-				<tr class="mdl-color--primary-dark">
-					<th></th>
-					<th class="mdl-data-table__cell--non-numeric"><h5 style="color: #fff;">{&shadow.title}</h5></th>
-					<th class="mdl-data-table__cell--non-numeric"></th>
-				</tr>
-			</thead>
-			<tbody>
-				{shadow.lines.iter().enumerate().map(|(index, line)|row(index,line, link)).collect::<Html>()}
-			</tbody>
-		</table>
-		</div>
-	</div>
+		{ audio }
+		<ol class="mdl-list">
+			{shadow.lines.iter().enumerate().map(|(index, line)|row(index,line, link)).collect::<Html>()}
+		</ol>
 	</>
 	}
 }
 
 fn row(index: usize, line: &Line, link: &ComponentLink<app::Model>) -> Html {
 	let callback = link.callback(move |_| app::Msg::Shadow(Msg::Play(index)));
+	let button_link = link.to_owned();
+	let button = mdc::button::flat_accent(&line.description, move || button_link.send_message(app::Msg::Shadow(Msg::Play(index))));
 	html! {
-	<tr onclick=callback>
-		<td class="mdl-data-table__cell--non-numeric"><i class="material-icons mdl-list__item-icon">{"play_arrow"}</i></td>
-		<td class="mdl-data-table__cell--non-numeric mdl-color-text--accent">{&line.description}</td>
-		<td class="mdl-data-table__cell--non-numeric">{&line.speaker}</td>
-	</tr>
+		<li class="mdl-list__item" onclick=callback>
+			<span class="mdl-list__item-primary-content">
+				<span>{index+1}</span>
+				{button}
+			</span>
+			<span class="mdl-list__item-secondary-action">
+				{&line.speaker}
+			</span>
+		</li>
 	}
 }
 

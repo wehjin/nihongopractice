@@ -13,6 +13,15 @@ pub mod button {
 	        </button>
 		}
 	}
+
+	pub fn flat_accent(label: &str, on_click: impl Fn() + 'static) -> Html {
+		let on_click: Callback<web_sys::MouseEvent> = Callback::from(move |_| on_click());
+		html! {
+	        <button class="mdl-button mdl-js-button mdl-button--accent" onclick=on_click>
+	            { label }
+	        </button>
+		}
+	}
 }
 
 pub mod card {

@@ -75,7 +75,7 @@ fn authorizing(link: &ComponentLink<app::Model>) -> Html {
 			< / div >
 			< div class = "mdl-card__title mdl-color--primary" style = "color:#fff" >
 				< div class= "mdl-card__media" >
-				<audio controls=true preload="auto"
+				<audio controls=true preload="none"
 					src="https://www.ccsf.edu/Departments/Language_Center/oll/japanese/ganbaroo_2/19cd17/02_dialogue_part_1.mp3"
 					onload = "alert('a'+event.type)"
 					onerror = "alert('a'+event.type)"
@@ -96,6 +96,10 @@ fn authorizing(link: &ComponentLink<app::Model>) -> Html {
 				< iframe id = "shadow-frame" height ="120" scrolling = "no" src = AUTHORIZATION_URL
 				    onload = "alert('f'+event.type); document.getElementById('auth-progress').style.display = 'none';"
 				    onerror = "alert('f'+event.type); document.getElementById('auth-progress').style.display = 'none';"
+				    onabort = "alert('f'+event.type); document.getElementById('auth-progress').style.display = 'none';"
+				    onstalled = "alert('f'+event.type); document.getElementById('auth-progress').style.display = 'none';"
+				    onsuspend = "alert('f'+event.type); document.getElementById('auth-progress').style.display = 'none';"
+				    onwaiting = "alert('f'+event.type); document.getElementById('auth-progress').style.display = 'none';"
 				/>
 				< / div >
 			< / div >

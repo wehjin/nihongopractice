@@ -22,18 +22,23 @@ fn content(link: &ComponentLink<app::Model>, model: &shadow::Model) -> Html {
 }
 
 fn authorized(audio_ref: &NodeRef, shadow: &Shadow, link: &ComponentLink<app::Model>) -> Html {
-	let audio = mdc::audio::visible("shadow-player", &shadow.audio_url, audio_ref);
-	let play_link = link.clone();
-	let play = mdc::button::flat("Play", move || play_link.send_message(app::Msg::Shadow(Msg::Play(0))));
+	let audio = mdc::audio::hidden("shadow-player", &shadow.audio_url, audio_ref);
+	let cell_classes = &(vec![
+		"mdl_cell",
+		"mdl-cell--4-col-phone",
+		"mdl-cell--6-col-tablet mdl-cell--1-offset-tablet",
+		"mdl-cell--8-col-desktop mdl-cell--2-offset-desktop",
+	].join(" "));
 	html! {
 	<>
+	{ audio }
 	<div class="mdl-grid">
-		<div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-desktop mdl-cell--2-offset-desktop mdl-cell--6-col-tablet mdl-cell--1-offset-tablet">
+		<div class=cell_classes>
 		<table class="mdl-data-table mdl-js-data-table" style="width:100%;">
 			<thead>
-				<tr class="mdl-color--blue-grey-100">
+				<tr class="mdl-color--primary-dark">
 					<th></th>
-					<th class="mdl-data-table__cell--non-numeric">{&shadow.title}</th>
+					<th class="mdl-data-table__cell--non-numeric"><h5 style="color: #fff;">{&shadow.title}</h5></th>
 					<th class="mdl-data-table__cell--non-numeric"></th>
 				</tr>
 			</thead>
@@ -43,8 +48,6 @@ fn authorized(audio_ref: &NodeRef, shadow: &Shadow, link: &ComponentLink<app::Mo
 		</table>
 		</div>
 	</div>
-	{ audio }
-	{play}
 	</>
 	}
 }
@@ -53,7 +56,7 @@ fn row(index: usize, line: &Line, link: &ComponentLink<app::Model>) -> Html {
 	let callback = link.callback(move |_| app::Msg::Shadow(Msg::Play(index)));
 	html! {
 	<tr onclick=callback>
-		<td class="mdl-data-table__cell--non-numeric">{index+1}</td>
+		<td class="mdl-data-table__cell--non-numeric"><i class="material-icons mdl-list__item-icon">{"play_arrow"}</i></td>
 		<td class="mdl-data-table__cell--non-numeric mdl-color-text--accent">{&line.description}</td>
 		<td class="mdl-data-table__cell--non-numeric">{&line.speaker}</td>
 	</tr>

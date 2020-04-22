@@ -67,7 +67,7 @@ mod data {
 			lines: vec![
 				Line {
 					speaker: "narrator".to_string(),
-					description: "えりさんとゆみさんは東京国さい学部でビジネスをせんこうしている大学生です。".to_string(),
+					description: "えりさんとゆみさんは東京国さい大学の国さい学部でビジネスをせんこうしている大学生です。".to_string(),
 					start: 7.42481,
 					end: 14.609233,
 				}

@@ -51,8 +51,8 @@ pub fn flat_button(label: &str, msg: Msg, link: &ComponentLink<Model>) -> Html {
 pub mod audio {
 	use yew::{Html, html, NodeRef};
 
-	pub fn visible(id: &str, src: &str, node_ref: &NodeRef) -> Html {
-		audio(id, true, src, node_ref)
+	pub fn hidden(id: &str, src: &str, node_ref: &NodeRef) -> Html {
+		audio(id, false, src, node_ref)
 	}
 
 	fn audio(id: &str, controls: bool, src: &str, node_ref: &NodeRef) -> Html {

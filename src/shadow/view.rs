@@ -5,7 +5,7 @@ use crate::{app, mdc, shadow, upgradeDom, utils};
 use super::*;
 
 pub fn page(model: &shadow::Model, link: &ComponentLink<app::Model>) -> Html {
-	mdc::page("Shadow 17.1", Some("Back".to_uppercase()), link, model, content)
+	mdc::page("Shadow: 17.1 花見", Some("Back".to_uppercase()), link, model, content)
 }
 
 fn content(link: &ComponentLink<app::Model>, model: &shadow::Model) -> Html {
@@ -26,35 +26,32 @@ fn authorized(audio_ref: &NodeRef, shadow: &Shadow, link: &ComponentLink<app::Mo
 	html! {
 	<>
 		{ audio }
-		<ol class="mdl-list">
+		<div class="mdl-grid">
 			{shadow.lines.iter().enumerate().map(|(index, line)|row(index,line, link)).collect::<Html>()}
-		</ol>
+		</div>
 	</>
 	}
 }
 
 fn row(index: usize, line: &Line, link: &ComponentLink<app::Model>) -> Html {
-	let callback = link.callback(move |_| app::Msg::Shadow(Msg::Play(index)));
 	let button_link = link.to_owned();
-	let button = mdc::button::flat_accent(&line.description, move || button_link.send_message(app::Msg::Shadow(Msg::Play(index))));
+	let button_label = format!("► {}", line.description);
+	let button = mdc::button::flat_primary(&button_label, move || button_link.send_message(app::Msg::Shadow(Msg::Play(index))));
 	html! {
-		<li class="mdl-list__item" onclick=callback>
-			<span class="mdl-list__item-primary-content">
-				<span>{index+1}</span>
-				{button}
-			</span>
-			<span class="mdl-list__item-secondary-action">
+		<>
+			<div class="mdl-cell mdl-cell--1-col mdl-cell--hide-phone mdl-cell--middle">
 				{&line.speaker}
-			</span>
-		</li>
+			</div>
+			<div class="mdl-cell mdl-cell--4-col mdl-cell--7-col-tablet mdl-cell--11-col-desktop mdl-cell--middle">{button}</div>
+		</>
 	}
 }
 
 fn authorizing(link: &ComponentLink<app::Model>) -> Html {
 	let success_link = link.clone();
-	let succeeded = mdc::button::flat("Continue", move || success_link.send_message(app::Msg::Shadow(Msg::Authorized)));
+	let succeeded = mdc::button::flat_primary("Continue", move || success_link.send_message(app::Msg::Shadow(Msg::Authorized)));
 	let failure_link = link.clone();
-	let failed = mdc::button::flat("Cancel", move || failure_link.send_message(app::Msg::Quit));
+	let failed = mdc::button::flat_primary("Cancel", move || failure_link.send_message(app::Msg::Quit));
 	html! {
 		< div class = "mdl-grid" >
 			< div class ="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col" >

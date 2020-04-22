@@ -5,22 +5,22 @@ use crate::app::{Model, Msg};
 pub mod button {
 	use yew::{Callback, Html, html};
 
-	pub fn flat(label: &str, on_click: impl Fn() + 'static) -> Html {
-		let on_click: Callback<web_sys::MouseEvent> = Callback::from(move |_| on_click());
-		html! {
-	        <button class="mdl-button mdl-js-button mdl-button--primary" onclick=on_click>
-	            { label }
-	        </button>
-		}
+	pub fn flat_primary(label: &str, on_click: impl Fn() + 'static) -> Html {
+		html(label, "mdl-button--primary", on_click)
 	}
 
 	pub fn flat_accent(label: &str, on_click: impl Fn() + 'static) -> Html {
+		html(label, "mdl-button--accent", on_click)
+	}
+
+	pub fn raised(label: &str, on_click: impl Fn() + 'static) -> Html {
+		html(label, "mdl-button--raised", on_click)
+	}
+
+	fn html(label: &str, extra_classes: &str, on_click: impl Fn() + 'static) -> Html {
 		let on_click: Callback<web_sys::MouseEvent> = Callback::from(move |_| on_click());
-		html! {
-	        <button class="mdl-button mdl-js-button mdl-button--accent" onclick=on_click>
-	            { label }
-	        </button>
-		}
+		let classes = format!("mdl-button mdl-js-button {}", extra_classes);
+		html! { <button class=&classes onclick=on_click> {label} </button> }
 	}
 }
 
@@ -30,7 +30,7 @@ pub mod card {
 	use super::*;
 
 	pub fn grid(title: &str, message: &str, (label, action): (&str, impl Fn() + 'static)) -> Html {
-		let button = button::flat(label, action);
+		let button = button::flat_primary(label, action);
 		html! {
 			<div class="mdl-cell mdl-cell--4-col">
 				<div class=" mdl-card mdl-shadow--2dp tool-card">
@@ -54,7 +54,7 @@ pub mod card {
 
 pub fn flat_button(label: &str, msg: Msg, link: &ComponentLink<Model>) -> Html {
 	let link = link.clone();
-	button::flat(label, move || { link.send_message(msg); })
+	button::flat_primary(label, move || { link.send_message(msg); })
 }
 
 pub mod audio {

@@ -1,10 +1,9 @@
-use web_sys::HtmlAudioElement;
 use yew::{Component, ComponentLink, Html, ShouldRender};
 
 use crate::{idle, recognition, shadow};
 use crate::data::random_steps;
 use crate::recognition::Challenge;
-use crate::utils::play_audio;
+use crate::utils::audio;
 
 pub struct Model {
 	link: ComponentLink<Self>,
@@ -27,16 +26,11 @@ impl Component for Model {
 	fn update(&mut self, msg: Self::Message) -> ShouldRender {
 		let new_state = match msg {
 			Msg::Quit => Some(State::Idle),
-			Msg::Shadow(shadow_msg) => {
+			Msg::Shadow(msg) => {
 				match &self.state {
 					State::Idle => Some(shadow::Model::start()),
 					State::Recognition { .. } => None,
-					State::Shadow(shadow_model) => {
-						match shadow_msg {
-							shadow::Msg::Start => Some(shadow::Model::start()),
-							shadow::Msg::FinishedLoading => Some(shadow_model.load()),
-						}
-					}
+					State::Shadow(shadow_model) => shadow_model.update(msg),
 				}.map(|it| State::Shadow(it))
 			}
 			Msg::Recognition => Some(State::Recognition { game: Challenge::new(&random_steps()) }),
@@ -69,9 +63,7 @@ impl Component for Model {
 						game.play = true;
 					}
 					if game.play {
-						if let Some(audio) = game.audio_ref.cast::<HtmlAudioElement>() {
-							play_audio(&audio)
-						}
+						audio::play(game.audio_ref.clone());
 						game.play = false;
 					}
 				}

@@ -75,10 +75,10 @@ fn authorizing(link: &ComponentLink<app::Model>) -> Html {
 			< / div >
 			< div class = "mdl-card__title mdl-color--primary" style = "color:#fff" >
 				< div class= "mdl-card__media" >
-					< iframe
-					id = "shadow-frame" height ="120" scrolling = "no" src = AUTHORIZATION_URL
-					onload = "document.getElementById('auth-progress').style.display = 'none'"
-					/ >
+					< iframe id = "shadow-frame" height ="120" scrolling = "no" src = AUTHORIZATION_URL
+					    onload = "document.getElementById('auth-progress').style.display = 'none'"
+					    onerror = "alert(event.type)"
+					/>
 				< / div >
 			< / div >
 			< div id = "auth-progress" class = "mdl-progress mdl-js-progress mdl-progress__indeterminate mdl-card__border" > </ div >

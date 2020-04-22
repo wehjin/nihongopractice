@@ -3,6 +3,7 @@ extern crate getrandom;
 #[macro_use]
 extern crate log;
 extern crate percent_encoding;
+extern crate shadow_core;
 extern crate verb;
 extern crate web_sys;
 

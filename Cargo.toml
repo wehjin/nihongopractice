@@ -20,6 +20,7 @@ yew = { version = "0.14.3", features = ["web_sys"] }
 percent-encoding = "2.1.0"
 verb = { git = "https://github.com/wehjin/verb.git" }
 getrandom = "0.1.14"
+shadow_core = { git = "https://github.com/wehjin/shadow-core.git" }
 
 [dev-dependencies]
 wasm-bindgen-test = "0.2"

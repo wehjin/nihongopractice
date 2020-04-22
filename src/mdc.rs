@@ -31,21 +31,28 @@ pub mod card {
 
 	pub fn grid(title: &str, message: &str, (label, action): (&str, impl Fn() + 'static)) -> Html {
 		let button = button::flat_primary(label, action);
+		let cell_classes = vec![
+			"mdl-cell",
+			"mdl-cell--4-col",
+			"mdl-cell--6-col-tablet",
+			"mdl-cell--8-col-desktop",
+			"mdl-cell--top",
+			"mdl-card",
+			"mdl-shadow--2dp",
+		].join(" ");
 		html! {
-			<div class="mdl-cell mdl-cell--4-col">
-				<div class=" mdl-card mdl-shadow--2dp tool-card">
-					<div class="mdl-card__title mdl-color--primary-dark" style="color:#fff">
-					    <h2 class="mdl-card__title-text">{ title }</h2>
-					</div>
-					<div class="mdl-card__title mdl-color--primary-dark">
-						<div class="mdl-card__subtitle-text"></div>
-					</div>
-					<div class="mdl-card__supporting-text" style="height: 3em">
-					    {message}
-					</div>
-					<div class="mdl-card__actions mdl-card--border">
-						{ button }
-					</div>
+			<div class=cell_classes>
+				<div class="mdl-card__title mdl-color--primary-dark" style="color:#fff">
+				    <h2 class="mdl-card__title-text">{ title }</h2>
+				</div>
+				<div class="mdl-card__title mdl-color--primary-dark">
+					<div class="mdl-card__subtitle-text"></div>
+				</div>
+				<div class="mdl-card__supporting-text">
+				    {message}
+				</div>
+				<div class="mdl-card__actions mdl-card--border">
+					{ button }
 				</div>
 			</div>
 		}

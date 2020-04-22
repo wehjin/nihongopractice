@@ -14,24 +14,24 @@ fn content(link: &ComponentLink<Model>, _: &()) -> Html {
 	let recognition_card = recognition(link.clone());
 	html! {
 		<div class="mdl-grid">
-			{ recognition_card }
 			{ shadow_card }
+			{ recognition_card }
 		</div>
     }
 }
 
 fn shadow(link: ComponentLink<Model>) -> Html {
 	mdc::card::grid(
-		"Shadow 17.1",
-		"Listen to and at the same time speak each line in the dialog.",
+		"Shadow: 17.1 花見",
+		"Simultaneously speak and listen to each line of dialog.",
 		("Get Started", move || link.send_message(Msg::Shadow(shadow::Msg::Start))),
 	)
 }
 
 fn recognition(link: ComponentLink<Model>) -> Html {
 	mdc::card::grid(
-		&format!("Verb Recognition {}", DEFAULT_CHALLENGE_SIZE),
-		"Listen to and write down the meaning of each verb selected at random from chapters 1-17.",
+		&format!("Verb Recognition"),
+		&format!("{} verbs selected at random from chapters 1-17.", DEFAULT_CHALLENGE_SIZE),
 		("Get Started", move || link.send_message(Msg::Recognition)),
 	)
 }

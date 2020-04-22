@@ -2,6 +2,7 @@ use verb::{Kind, random, Verb};
 
 use crate::data;
 use crate::recognition::ChallengeStep;
+use crate::shadow::{Line, Shadow};
 
 #[cfg(test)]
 pub(crate) mod tests {
@@ -55,6 +56,10 @@ pub(crate) mod tests {
 			mode: Mode::Immediate,
 		}
 	}
+}
+
+pub fn ch17_1_shadow() -> Shadow {
+	include!["shadow.in"]
 }
 
 pub const DEFAULT_CHALLENGE_SIZE: usize = 10;

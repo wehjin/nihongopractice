@@ -337,6 +337,7 @@ dependencies = [
  "getrandom",
  "log",
  "percent-encoding",
+ "shadow_core",
  "verb",
  "wasm-bindgen",
  "wasm-bindgen-futures 0.4.10",
@@ -466,6 +467,11 @@ name = "sha1"
 version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2579985fda508104f7587689507983eadd6a6e84dd35d6d115361f530916fa0d"
+
+[[package]]
+name = "shadow_core"
+version = "0.1.0"
+source = "git+https://github.com/wehjin/shadow-core.git#8e270fe20d8c0b6020486b2fa5d743557ffe193e"
 
 [[package]]
 name = "slab"

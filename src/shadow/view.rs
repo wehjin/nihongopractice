@@ -75,10 +75,28 @@ fn authorizing(link: &ComponentLink<app::Model>) -> Html {
 			< / div >
 			< div class = "mdl-card__title mdl-color--primary" style = "color:#fff" >
 				< div class= "mdl-card__media" >
-					< iframe id = "shadow-frame" height ="120" scrolling = "no" src = AUTHORIZATION_URL
-					    onload = "document.getElementById('auth-progress').style.display = 'none'"
-					    onerror = "alert(event.type)"
-					/>
+				<audio controls=true preload="auto"
+					src="https://www.ccsf.edu/Departments/Language_Center/oll/japanese/ganbaroo_2/19cd17/02_dialogue_part_1.mp3"
+					onload = "alert('a'+event.type)"
+					onerror = "alert('a'+event.type)"
+					onabort = "alert('a'+event.type)"
+					oncanplay = "alert('a'+event.type)"
+					oncanplaythrough = "alert('a'+event.type)"
+					ondurationchange = "alert('a'+event.type)"
+					onemptied = "alert('a'+event.type)"
+					onloadeddata = "alert('a'+event.type)"
+					onloadedmetadata = "alert('a'+event.type)"
+					onloadstart = "alert('a'+event.type)"
+					onplay = "alert('a'+event.type)"
+					onpause = "alert('a'+event.type)"
+					onprogress = "alert('a'+event.type)"
+					onsuspend = "alert('a'+event.type)"
+					onwaiting = "alert('a'+event.type)"
+				/>
+				< iframe id = "shadow-frame" height ="120" scrolling = "no" src = AUTHORIZATION_URL
+				    onload = "alert('f'+event.type); document.getElementById('auth-progress').style.display = 'none';"
+				    onerror = "alert('f'+event.type); document.getElementById('auth-progress').style.display = 'none';"
+				/>
 				< / div >
 			< / div >
 			< div id = "auth-progress" class = "mdl-progress mdl-js-progress mdl-progress__indeterminate mdl-card__border" > </ div >
@@ -96,4 +114,4 @@ fn authorizing(link: &ComponentLink<app::Model>) -> Html {
 	}
 }
 
-const AUTHORIZATION_URL: &str = "https://www.ccsf.edu/Departments/Language_Center/oll/japanese/ganbaroo_2/review.html";
+const AUTHORIZATION_URL: &str = "https://www.ccsf.edu/Departments/Language_Center/oll/japanese/ganbaroo_2/list17.html";

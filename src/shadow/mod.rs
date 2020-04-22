@@ -2,6 +2,9 @@ use yew::NodeRef;
 
 use crate::utils::audio;
 
+pub use self::core::*;
+
+pub mod core;
 pub mod view;
 
 #[derive(Clone, Debug)]
@@ -43,20 +46,6 @@ pub enum Msg {
 	Play(usize),
 }
 
-#[derive(Clone, Debug)]
-pub struct Shadow {
-	pub title: String,
-	pub lines: Vec<Line>,
-	pub audio_url: String,
-}
-
-#[derive(Clone, Debug)]
-pub struct Line {
-	pub speaker: String,
-	pub description: String,
-	pub start: f64,
-	pub end: f64,
-}
 
 mod data {
 	use crate::shadow::{Line, Shadow};

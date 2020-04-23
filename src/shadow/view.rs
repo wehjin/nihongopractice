@@ -22,11 +22,20 @@ fn content(link: &ComponentLink<app::Model>, model: &shadow::Model) -> Html {
 }
 
 fn authorized(audio_ref: &NodeRef, shadow: &Shadow, link: &ComponentLink<app::Model>) -> Html {
-	let audio = mdc::audio::hidden("shadow-player", &shadow.audio_url, audio_ref);
+	let audio_ref = audio_ref.clone();
 	html! {
 	<>
-		{ audio }
-		<div class="mdl-list">
+		<audio id="shadow-audio" preload="none" ref=audio_ref
+			src=shadow.audio_url
+			onerror = "document.getElementById('shadow-loading-text').innerText=\"The dialog file is either not authorized or not available.\";"
+			onsuspend = "document.getElementById('shadow-audio').play(); document.getElementById('shadow-audio').onsuspend = null;"
+			oncanplay = "document.getElementById('shadow-audio').pause(); document.getElementById('shadow-audio').oncanplay = null;"
+			oncanplaythrough = "document.getElementById('shadow-loading').style.display = \"none\"; document.getElementById('shadow-list').style.display = \"block\"; document.getElementById('shadow-audio').oncanplaythrough = null;"
+		/>
+		<div id="shadow-loading" class="mdl-card__title">
+			<h2 id="shadow-loading-text" class="mdl-card__title-text">{"Loading audio…"}</h2>
+        </div>
+		<div id="shadow-list" class="mdl-list" style="display:none;">
 			{shadow.lines.iter().enumerate().map(|(index, line)|row(index,line, link)).collect::<Html>()}
 		</div>
 	</>
@@ -67,46 +76,27 @@ fn authorizing(link: &ComponentLink<app::Model>) -> Html {
 	let succeeded = mdc::button::flat_primary("Continue", move || success_link.send_message(app::Msg::Shadow(Msg::Authorized)));
 	let failure_link = link.clone();
 	let failed = mdc::button::flat_primary("Cancel", move || failure_link.send_message(app::Msg::Quit));
+	let title = "Checking access to the audio file";
 	html! {
 		< div class = "mdl-grid" >
 			< div class ="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col" >
 				< div class = "mdl-card__title mdl-color--primary" style = "color:#fff">
-				< h2 class = "mdl-card__title-text" >{"Authorizing"}< / h2 >
+				< h2 class = "mdl-card__title-text" >{title}< / h2 >
 			< / div >
 			< div class = "mdl-card__title mdl-color--primary" style = "color:#fff" >
 				< div class= "mdl-card__media" >
-				<audio controls=true preload="none"
-					src="https://www.ccsf.edu/Departments/Language_Center/oll/japanese/ganbaroo_2/19cd17/02_dialogue_part_1.mp3"
-					onload = "alert('a'+event.type)"
-					onerror = "alert('a'+event.type)"
-					onabort = "alert('a'+event.type)"
-					oncanplay = "alert('a'+event.type)"
-					oncanplaythrough = "alert('a'+event.type)"
-					ondurationchange = "alert('a'+event.type)"
-					onemptied = "alert('a'+event.type)"
-					onloadeddata = "alert('a'+event.type)"
-					onloadedmetadata = "alert('a'+event.type)"
-					onloadstart = "alert('a'+event.type)"
-					onplay = "alert('a'+event.type)"
-					onpause = "alert('a'+event.type)"
-					onprogress = "alert('a'+event.type)"
-					onsuspend = "alert('a'+event.type)"
-					onwaiting = "alert('a'+event.type)"
-				/>
 				< iframe id = "shadow-frame" height ="120" scrolling = "no" src = AUTHORIZATION_URL
-				    onload = "alert('f'+event.type); document.getElementById('auth-progress').style.display = 'none';"
-				    onerror = "alert('f'+event.type); document.getElementById('auth-progress').style.display = 'none';"
-				    onabort = "alert('f'+event.type); document.getElementById('auth-progress').style.display = 'none';"
-				    onstalled = "alert('f'+event.type); document.getElementById('auth-progress').style.display = 'none';"
-				    onsuspend = "alert('f'+event.type); document.getElementById('auth-progress').style.display = 'none';"
-				    onwaiting = "alert('f'+event.type); document.getElementById('auth-progress').style.display = 'none';"
+					style = "pointer-events: none"
+				    onload = "document.getElementById('auth-progress').style.display = 'none';"
+				    onerror = "document.getElementById('auth-progress').style.display = 'none';"
+				    onabort = "document.getElementById('auth-progress').style.display = 'none';"
 				/>
 				< / div >
 			< / div >
 			< div id = "auth-progress" class = "mdl-progress mdl-js-progress mdl-progress__indeterminate mdl-card__border" > </ div >
 				< div class = "mdl-card__actions mdl-card--border" >
 					<div class = "mdl-card__supporting-text" >
-						{"Continue when the pink section turns white. Otherwise cancel."}
+						{"If the pink section above changes to white, press Continue. Otherwise wait for the password prompt."}
 					< / div >
 				< / div >
 				< div class = "mdl-card__actions mdl-card--border" >

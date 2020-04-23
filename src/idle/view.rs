@@ -21,9 +21,11 @@ fn content(link: &ComponentLink<Model>, _: &()) -> Html {
 }
 
 fn shadow(link: ComponentLink<Model>) -> Html {
+	let title = "Shadow: 17.1 花見";
+	let message = "Practice vocalization by simultaneously listening to and speaking each line of dialog.";
 	mdc::card::grid(
-		"Shadow: 17.1 花見",
-		"Simultaneously speak and listen to each line of dialog.",
+		title,
+		message,
 		("Get Started", move || link.send_message(Msg::Shadow(shadow::Msg::Start))),
 	)
 }
@@ -31,7 +33,7 @@ fn shadow(link: ComponentLink<Model>) -> Html {
 fn recognition(link: ComponentLink<Model>) -> Html {
 	mdc::card::grid(
 		&format!("Verb Recognition"),
-		&format!("{} verbs selected at random from chapters 1-17.", DEFAULT_CHALLENGE_SIZE),
+		&format!("Practice recognizing {} verbs selected at random from chapters 1-17.", DEFAULT_CHALLENGE_SIZE),
 		("Get Started", move || link.send_message(Msg::Recognition)),
 	)
 }

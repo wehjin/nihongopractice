@@ -17,6 +17,13 @@ pub mod button {
 		html(label, "mdl-button--raised", on_click)
 	}
 
+	pub fn raised_multiline(label: &str, on_click: impl Fn() + 'static) -> Html {
+		let on_click: Callback<web_sys::MouseEvent> = Callback::from(move |_| on_click());
+		let classes = "mdl-button mdl-js-button mdl-button--raised";
+		let styles = "height:auto; word-wrap:break-word; text-align:left; line-height:normal; padding-top:8px; padding-bottom:8px";
+		html! { <button class=classes style=styles onclick=on_click> {label} </button> }
+	}
+
 	fn html(label: &str, extra_classes: &str, on_click: impl Fn() + 'static) -> Html {
 		let on_click: Callback<web_sys::MouseEvent> = Callback::from(move |_| on_click());
 		let classes = format!("mdl-button mdl-js-button {}", extra_classes);

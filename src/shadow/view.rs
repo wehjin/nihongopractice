@@ -45,7 +45,7 @@ fn authorized(audio_ref: &NodeRef, shadow: &Shadow, link: &ComponentLink<app::Mo
 fn row(index: usize, line: &Line, link: &ComponentLink<app::Model>) -> Html {
 	let button_link = link.to_owned();
 	let button_label = format!("► {}", line.description);
-	let button = mdc::button::raised(&button_label, move || button_link.send_message(app::Msg::Shadow(Msg::Play(index))));
+	let button = mdc::button::raised_multiline(&button_label, move || button_link.send_message(app::Msg::Shadow(Msg::Play(index))));
 	let speaker_classes = vec![
 		"mdl-cell",
 		"mdl-cell--1-col",

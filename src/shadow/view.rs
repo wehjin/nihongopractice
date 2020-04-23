@@ -33,7 +33,7 @@ fn authorized(audio_ref: &NodeRef, shadow: &Shadow, link: &ComponentLink<app::Mo
 			oncanplaythrough = "document.getElementById('shadow-loading').style.display = \"none\"; document.getElementById('shadow-list').style.display = \"block\"; document.getElementById('shadow-audio').oncanplaythrough = null;"
 		/>
 		<div id="shadow-loading" class="mdl-card__title">
-			<h2 id="shadow-loading-text" class="mdl-card__title-text">{"Loading audio…"}</h2>
+			<h2 id="shadow-loading-text" class="mdl-card__title-text">{"Loading the audio file. This may take a minute…"}</h2>
         </div>
 		<div id="shadow-list" class="mdl-list" style="display:none;">
 			{shadow.lines.iter().enumerate().map(|(index, line)|row(index,line, link)).collect::<Html>()}
@@ -96,7 +96,7 @@ fn authorizing(link: &ComponentLink<app::Model>) -> Html {
 			< div id = "auth-progress" class = "mdl-progress mdl-js-progress mdl-progress__indeterminate mdl-card__border" > </ div >
 				< div class = "mdl-card__actions mdl-card--border" >
 					<div class = "mdl-card__supporting-text" >
-						{"If the pink section above changes to white, press Continue. Otherwise wait for the password prompt."}
+						{"If the pink section above turns white, Continue. Otherwise wait for the password prompt."}
 					< / div >
 				< / div >
 				< div class = "mdl-card__actions mdl-card--border" >

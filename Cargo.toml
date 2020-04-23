@@ -32,6 +32,7 @@ features = [
   'KeyboardEvent',
   'MouseEvent',
   'Window',
+  'Location',
   'Document',
   'Element',
   'Performance',

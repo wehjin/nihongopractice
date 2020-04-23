@@ -1,6 +1,6 @@
 use yew::{Component, ComponentLink, Html, ShouldRender};
 
-use crate::{idle, recognition, shadow};
+use crate::{idle, recognition, shadow, utils};
 use crate::data::random_steps;
 use crate::recognition::Challenge;
 use crate::utils::audio;
@@ -25,7 +25,10 @@ impl Component for Model {
 
 	fn update(&mut self, msg: Self::Message) -> ShouldRender {
 		let new_state = match msg {
-			Msg::Quit => Some(State::Idle),
+			Msg::Quit => {
+				utils::reload();
+				Some(State::Idle)
+			},
 			Msg::Shadow(msg) => {
 				match &self.state {
 					State::Idle => Some(shadow::Model::start()),

@@ -64,6 +64,12 @@ fn window() -> web_sys::Window {
 	web_sys::window().expect("no global `window` exists")
 }
 
+pub fn reload() {
+	window()
+		.location().reload()
+		.expect("reload")
+}
+
 pub fn request_animation_frame(f: impl FnMut() + 'static) {
 	let f = Closure::wrap(Box::new(f) as Box<dyn FnMut()>);
 	window()
